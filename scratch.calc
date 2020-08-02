@@ -1,19 +1,39 @@
 Case (
+  ( $$_windowCenterH * $$_windowScreenX ) <= ( _nWidth / 2 ) ;
+  0 ; // place window on the left screen edge
+  // else check if we are on screen right edge
+  Case (
+	  ( $$_screenWidth - $$_windowCenterH ) * $$_windowScreenX >= (_nWidth / 2 ) ;
+	  ( $$_screenWidth - _nWidth ) * $$_windowScreenX  ; // place new window on right edge
+	  ( $$_windowCenterL ) * $$_windowScreenX // else center window on window
+       )
+   )
+
+
+
+
+
+
+Case (
 	$$_windowLeft >= 0 ; // we are on a right screen (+0)
+	
+	
 	  Case (
-		  $$_windowCenterH <= ( _nWidth / 2 ) ;
+		  ( $$_windowCenterH * 1 ) <= ( _nWidth / 2 ) ;
 		  0 ; // place window on the left screen edge
 		  // else check if we are on screen right edge
 		  Case (
-			  $$_screenWidth - $$_windowCenterH >= (_nWidth / 2 ) ;
-			  $$_screenWidth - _nWidth ; // place new window on right edge
-			  $$_windowCenterL // else center window on window
+			  ( $$_screenWidth - $$_windowCenterH ) * 1 >= (_nWidth / 2 ) ;
+			  ( $$_screenWidth - _nWidth ) * 1  ; // place new window on right edge
+			  ( $$_windowCenterL ) * 1 // else center window on window
 		       )
 		   )
+		   
+		   
 	;
 	//Else - we are on the left screen (-1)
 	Case ( 
-		( $$_screenWidth + $$_widnowCenterH ) <= ( _nWidth / 2 ) ; 
+		 $$_windowCenterH * -1 <= ( _nWidth / 2 ) ; 
 		"" ; 
 		"" 
 		)

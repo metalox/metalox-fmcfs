@@ -8,15 +8,17 @@ Ben Miller 2020-03 ben@benlight.net
 */
 Let(
 [
-  $$_windowHeight = Get ( WindowHeight );
-  $$_windowWidth = Get (WindowWidth);
-  $$_windowTop = Get(WindowTop);
-  $$_windowLeft = Get(WindowLeft) ;
+  $$_windowScreenHeight = Get(ScreenHeight) ;
+  $$_windowScreenWidth = Get(ScreenWidth) ;
+  $$_windowScreenX = Case ( Get(WindowLeft ) < 0 ; -1 ; 1 ) ;
+  $$_windowHeight = Get ( WindowHeight ) ;
+  $$_windowWidth = Get (WindowWidth) ;
+  $$_windowTop = Get(WindowTop) ;
+  $$_windowLeft = Get(WindowLeft)  ;
   $$_windowRight = Get(WindowLeft) +  Get (WindowWidth) ;
-  $$_windowCentreH = Get(WindowLeft) +  ( Get (WindowWidth) / 2) ;
+  $$_windowCenterH = Get(WindowLeft) +  ( Get (WindowWidth ) / 2) ;
   $$_windowMiddleV = Get(WindowTop) +  ( Get (WindowHeight) / 2) ;
-  $$_windowBottom = Get(WindowTop) + Get ( WindowHeight );
-  $$_windowScreenX = Case (  $$_windowLeft < 0 ; -1 ; 1 )
+  $$_windowBottom = Get(WindowTop) + Get ( WindowHeight )
 ];
   False
 )

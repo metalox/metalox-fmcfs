@@ -8,15 +8,17 @@ Ben Miller 2020-03 ben@benlight.net
 */
 Let(
 [
+  $$_windowScreenHeight = "" ;
+  $$_windowScreenWidth = "" ;
+  $$_windowScreenX = "" ;
   $$_windowHeight = "" ;
   $$_windowWidth = "" ;
   $$_windowTop = "" ;
   $$_windowLeft = "" ;
   $$_windowRight = "" ;
-  $$_windowCentreH = "" ;
+  $$_windowCenterH = "" ;
   $$_windowMiddleV = "" ;
-  $$_windowBottom = "" ;
-  $$_windowScreenH = ""
+  $$_windowBottom = ""
 ];
   False
 )
