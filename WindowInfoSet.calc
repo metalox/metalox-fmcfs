@@ -16,7 +16,7 @@ Let(
   $$_windowCentreH = Get(WindowLeft) +  ( Get (WindowWidth) / 2) ;
   $$_windowMiddleV = Get(WindowTop) +  ( Get (WindowHeight) / 2) ;
   $$_windowBottom = Get(WindowTop) + Get ( WindowHeight );
-  $$_windowScreenH = Case (  $$_windowLeft < 0 ; "L" ; "R" )
+  $$_windowScreenX = Case (  $$_windowLeft < 0 ; -1 ; 1 )
 ];
   False
 )
