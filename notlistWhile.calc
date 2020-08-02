@@ -1,0 +1,27 @@
+// returns List with Items in A not in B
+If (listA <>"";
+     If(PatternCount("¶"&listB&"¶"; "¶"&LeftValues(listA;1)); "";LeftValues(listA;1))
+ &    NotList(MiddleValues(listA;2;ValueCount(listA)-1); listB)
+)
+
+// returns List with Items in A not in B
+
+If (listA <>"";
+
+     If(
+		 PatternCount(
+			  "¶"&listB&"¶" ; "¶"& LeftValues(listA ;1) ) ; 
+		"";
+	     LeftValues( listA ;1 ) ) &
+		    
+         NotList( MiddleValues ( listA; 2; ValueCount ( listA ) -1 ) ; listB )
+
+)
+
+
+While (
+	
+	
+	
+	
+	)

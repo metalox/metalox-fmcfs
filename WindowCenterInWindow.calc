@@ -1,0 +1,68 @@
+/*
+WindowCenterInWindow
+
+Returns a Number to positon a New Window, or move a window, for Window Top or Window Left, depending on parameter "T" or "L"
+
+"T" returns a number for the New Window Top position
+"L" returns a number for the New Window Left position
+_nHeight is the window height of the new window,  required for "T"
+_nWidth is the window width of the new window,  required for "L"
+
+Use the custom function  WindowInfoSet() prior to running this cf to set the following required global variables:
+
+$$_windowHeight
+$$_windowWidth
+$$_windowTop
+$$_windowLeft
+$$_windowRight
+$$_windowCenterH
+$$_windowMiddleV
+$$_windowBottom (for future use)
+
+Use the custom Function WindowInfoClear() - to clear the global Variables when done
+
+Usage:
+Paramters: _TL_ ; _nHeight ; _nWidth
+    "T" to return a value for WindowTop 
+    "L" to return a value for WindowLeft
+
+    IF "T" is entered _nWidth is ignored (it can be set to 0)
+    IF "L" is entered _nHeight is ignored (it can be set to 0)
+
+Sample usage: CenterInWindow ( "T" ; 400 ; 0 )
+sample output (  100  )
+
+Sample usage: CenterInWindow ( "T" ; 400 ; 300 )
+sample output (  100 )
+
+Sample usage: CenterInWindow ( "L" ; 0; 300 )
+sample output (  120 )
+
+Sample usage: CenterInWindow ( "L" ; 400 ; 300 )
+sample output (  120 )
+
+Ben Miller 2020-03 ben@benlight.net
+Update: 2020-07-23
+  If parent screen is on left edge take in to account when calulating Left for new window
+  IF Parent screen is on the right edge take in to accountwhen calculating Left for the new window -TO DO - will need to have (or calulate the parent Window Right!
+*/
+
+Case(  
+  _TL = "T" ; 
+    Case ( _nHeight > Get(ScreenHeight) ; 0 ; $$_windowMiddleV - ( _nheight / 2 )) ;   
+  _TL = "L" ; 
+    Case ( _nWidth > Get(ScreenWidth) ;  
+      Case (  $$_windowLeft ≥ 0 ; 0 ; Get(ScreenWidth) * -1 ) ; 
+        Let ( ~pl = $$_windowCenterH - ( _nwidth / 2 ) ;
+          Case ( $$_windowLeft ≥ 0 ;
+
+            Case ( $$_windowRight < Get(ScreenWidth) ; Max ( 0 ;  ~pl ) ;  Min ( ~pl; $$_windowLeft )) ; 
+
+            Max ( Get( ScreenWidth ) * -1 ; 
+              Max (  ~pl ; $$_windowLeft )
+             )
+          )
+       )
+    ) ;
+  ""
+)

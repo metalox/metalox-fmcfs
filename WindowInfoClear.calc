@@ -1,0 +1,22 @@
+/* 
+WindowInfoClear
+
+Clears window info from some Gloabl Variables 
+Can be used after the custom function WindowCentreInWindow()
+
+Ben Miller 2020-03 ben@benlight.net
+*/
+Let(
+[
+  $$_windowHeight = "" ;
+  $$_windowWidth = "" ;
+  $$_windowTop = "" ;
+  $$_windowLeft = "" ;
+  $$_windowRight = "" ;
+  $$_windowCentreH = "" ;
+  $$_windowMiddleV = "" ;
+  $$_windowBottom = "" ;
+  $$_windowScreenH = ""
+];
+  False
+)

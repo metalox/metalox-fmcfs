@@ -1,0 +1,43 @@
+/*
+ToggleValueInList ( listOfValues ; value )
+
+Toggles the value in the listOfValues
+
+Sample input: ToggleValueInList ( "g¶h¶c" ; "a" )
+Sample Output: "g¶h¶c¶a"
+
+Sample input: ToggleValueInList ( "g¶h¶c¶a"" ; "a" )
+Sample Output: "g¶h¶c"
+
+*/
+
+Case ( 
+// If list is Empty: set value as the list
+    
+    IsEmpty ( listOfValues ) ; value ;
+
+//Else If the value is in the list: remove it :
+    
+     ValueCount ( FilterValues ( listOfValues ; value )) > 0 ;
+ 
+    While ( [ 
+       v = value ;
+       newList = "" ;
+       x = ValueCount ( listOfValues );
+       i = 0
+       ] ; 
+         i < x ; 
+      [ 
+        i=i + 1 ;
+        a = GetValue ( listOfValues ; i ) ;
+        newList = Case ( a ≠ v ; newList & a & ¶ ; newList ) 
+      ] ; 
+        newList 
+    ) ;
+
+
+// Else append to list:
+
+    listOfValues & ¶ & value
+
+)

@@ -1,0 +1,62 @@
+/*
+Toggles the values from ListB in ListA and returns the updated ListA
+
+Requires Mimimum FMPA 18 with the While() function
+
+If the any of the values from ListB  are in ListA: remove them.
+Otherwise add them.
+
+Sample input: ToggleValuesInList ( "g¶h¶c" ; "a" )
+Sample Output: "g¶h¶c¶a"
+
+Sample input: ToggleValuesInList ( "g¶h¶c¶a"" ; "a" )
+Sample Output: "g¶h¶c"
+
+Sample input: ToggleValuesInList ( "g¶h¶c" ; "a¶g" )
+Sample Output: "h¶c¶a"
+
+Sample input: ToggleValuesInList ( "g¶h¶c¶a"" ; "a¶g" )
+Sample Output: "h¶c¶a"
+
+Benedick Miller 2020
+ben@benlight.net
+*/
+
+
+Case ( IsEmpty ( ListA  ) ; ListB ;
+  
+  While ( [
+    uListB = UniqueValues ( ListB ) ;
+    x = ValueCount (uListB) ;
+    newList = ListA ;
+    i = 0
+  ] ; 
+    i < x ; 
+  [ 
+    i = i + 1 ; 
+    b = GetValue ( uListB ; i ) ;
+    newList = Case ( PatternCount ( newList ; b ) ;
+  
+  // Inner while ---------[
+      
+      While ( [ 
+            r = "" ;
+            y = ValueCount( newList ) ;
+            j = 0
+          ]; 
+            j < y ;
+          [ 
+            j = j + 1 ;
+            a = GetValue ( newList ; j ) ;   
+            r = Case ( a = b ; r ; Case ( IsEmpty (r) ; a ; r & ¶ & a ) )
+          ]; 
+            r
+       )
+      
+  //-----------------------]
+  
+        ; Case (IsEmpty ( newList) ; b ; newList & ¶ & b )  ) 
+    ];   
+    newList  
+  )  
+)

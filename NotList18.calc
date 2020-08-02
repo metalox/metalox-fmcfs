@@ -1,0 +1,56 @@
+/*
+NotList18 ( ListA ; ListB )
+
+
+This CF requires minimum FMP18 with the While Function
+
+Removes any values in ListB from ListA
+
+Sample Input: NotList18 ( "a¶b¶c¶d¶e"  ; "b¶d" )
+Sample Output: "a¶c¶e"
+
+Inspired By NotList
+
+
+Benedick Miller 2020
+ben@benlight.net
+*/
+
+
+While ( [ 
+       uListB = UniqueValues ( ListB ) ;
+       x = ValueCount ( uListB );
+       newList = ListA ;
+       i = 0
+      ]; 
+         i < x ; 
+      [ 
+        i = i + 1 ;
+        b = GetValue ( uListB ; i ) ;
+        newList = Case ( PatternCount ( newList ; b ) ;
+
+// Inner while ---------[
+
+        While ( [ 
+              r = "" ;
+              y = ValueCount( newList ) ;
+              j = 0
+            ]; 
+              j < y ;
+            [ 
+              j = j + 1 ;
+              a = GetValue ( newList ; j ) ;   
+              r = Case ( a = b ; r ; Case ( IsEmpty (r) ; a ; r & ¶ & a ) )
+            ]; 
+              r
+         )
+
+//-----------------------]
+
+            ; newList )
+       
+      ]; 
+
+   newList
+
+)
