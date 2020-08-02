@@ -55,9 +55,11 @@ Case(
   Case ( _nHeight ≥ $$_windowScreenHeight ; 0 ; $$_windowMiddleV - ( _nheight / 2 )) ;   
   _TL = "L" ; 
   Case ( $$_windowScreenX = 1 ;
-	  Case ( _nWidth ≥ $$_windowScreenWidth ; 0 ; $$_windowCenterH - ( _nWidth / 2 )) ;
-	  Case ( _nWidth ≥ $$_windowScreenWidth ; $$_windowScreenWidth * -1 ; $$_windowCenterH - ( _nWidth / 2 ))	
-	) ;
+	  // right screens (+0)
+	  Case ( _nWidth ≥ $$_windowScreenWidth ; 0 ; max ( 0 ; $$_windowCenterH - ( _nWidth / 2 ))) ;
+	  // left screens (-1)
+	  Case ( _nWidth ≥ $$_windowScreenWidth ; $$_windowScreenWidth * -1 ; max ( $$_windowScreenWidth * -1 ; $$_windowCenterH - ( _nWidth / 2 )))
+	);
   ""
 )
    
