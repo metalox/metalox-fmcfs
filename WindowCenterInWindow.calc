@@ -45,9 +45,8 @@ Sample usage: CenterInWindow ( "L" ; 400 ; 300 )
 sample output (  120 )
 
 Ben Miller 2020-03 ben@benlight.net
-Update: 2020-07-23
-  If parent screen is on left edge take in to account when calulating Left for new window
-  IF Parent screen is on the right edge take in to accountwhen calculating Left for the new window -TO DO - will need to have (or calulate the parent Window Right!
+Updated : 2020-08-02
+    Ensure that left edge of child window is not off the left screen edge
 */
 
 Case(  
@@ -56,10 +55,9 @@ Case(
   _TL = "L" ; 
   Case ( $$_windowScreenX = 1 ;
 	  // right screens (+0)
-	  Case ( _nWidth ≥ $$_windowScreenWidth ; 0 ; max ( 0 ; $$_windowCenterH - ( _nWidth / 2 ))) ;
+	  Case ( _nWidth ≥ $$_windowScreenWidth ; 0 ; Max ( 0 ; $$_windowCenterH - ( _nWidth / 2 ))) ;
 	  // left screens (-1)
-	  Case ( _nWidth ≥ $$_windowScreenWidth ; $$_windowScreenWidth * -1 ; max ( $$_windowScreenWidth * -1 ; $$_windowCenterH - ( _nWidth / 2 )))
+	  Case ( _nWidth ≥ $$_windowScreenWidth ; $$_windowScreenWidth * -1 ; Max ( $$_windowScreenWidth * -1 ; $$_windowCenterH - ( _nWidth / 2 )))
 	);
   ""
 )
-   
