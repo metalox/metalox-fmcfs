@@ -1,0 +1,29 @@
+/*
+timeToTextHHMM ( _time ; _format )
+
+Convert time to text output as HH:MM
+
+paramters 
+    _time - the time in seconds, eg. a filemaker time or a number
+    _format - "24" or "ampm" if empty defaults to "24" 
+ 
+sample input: ( 13:07 ; "ampm" )
+sample output: "01:07 pm"
+
+sample input: ( 9:07 ; "24" )
+sample output: "09:07"
+
+
+*/
+Case ( IsEmpty ( _time ) ; "?" ; GetAsNumber( _time ) > 86400 ; "?" ;
+  Let ([
+    _suffix = Case ( _format = "ampm" ; Case (  _time < 43200 ; " am" ; " pm" ) ; "" ) ;
+    _h = Hour ( _time ) ;
+    _h = Case ( _format = "ampm" ; Case ( _h = 24 ; "00" ; _h > 12 ; _h - 12  ; _h ) ; _h )  ;
+    _h = Case ( _h < 10 ; "0" & _h ; _h ) ; 
+   _m = Minute ( _time ) ;
+   _m = Case ( _m < 10 ; "0" & _m ; _m ) 
+    ];
+  _h & ":" & _m & _suffix
+  ) 
+)
