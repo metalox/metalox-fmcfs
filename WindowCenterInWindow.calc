@@ -1,5 +1,5 @@
 /*
-WindowCenterInWindow
+WindowCenterInWindow ( _TL ; _nHeight ; _n_width )
 
 Returns a Number to positon a New Window, or move a window, for Window Top or Window Left, depending on parameter "T" or "L"
 
