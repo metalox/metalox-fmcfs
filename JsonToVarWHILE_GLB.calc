@@ -1,0 +1,77 @@
+/* 
+JsonToVarWHILE ( json )
+FUNCTION THAT RETURN A STRING LIKE THIS [ <json element name> = <json element value> ; ] FOR EACH GIVEN JSON ELEMENT (RECURSIVE) 
+Gianluca Benanti 2020-08-06
+
+THIS IS FOR FileMaker 19 and later, using While()
+See older version for pre-FileMaker 19 versions
+
+========================
+
+THIS IS THE JSON STRUCTURE TO USE:
+
+JSONSetElement ( $Json
+
+// LIST OF JSON ELEMENTS WITH A VARIABLE NAME AS THE KEY NAME
+  ;[ "$VarName01" ; "VarValue01" ; 1 ]
+  ;[ "$VarName02" ; "VarValue02" ; 1 ]
+  ;[ "$VarName03" ; "VarValue03" ; 1 ]
+  ;[ "$VarName04" ; "VarValue04" ; 1 ]
+  ;[ "$VarName05" ; "VarValue05" ; 1 ]
+  ;[ "$VarName06" ; "VarValue06" ; 1 ]
+  ;[ "$VarName07" ; "VarValue07" ; 1 ]
+...
+  ;[ "$VarNameN" ; "VarValueN" ; 1 ]
+
+)
+
+// THIS PART IS ALWAYS FIXED:
+  ["end" ; "" ; 6]
+) 
+
+EVERY VALUE IS A TEXT VALUE. YOU MUST CONVERT IT LATER WHILE YOU USE IT
+
+"the cool thing is that you don't have to follow the order of parameters and also when you read the parameters you do it all with one instruction"
+
+========================
+*/
+
+
+Evaluate ( 
+	"Let ( 
+	[ " & 
+			While ( 
+				[ 
+					_json = json ;
+					_i = 0 ;
+					_tot = PatternCount ( JSONListKeys ( _json ; "" ) ; "¶" ) + 1 ;
+					_var = "" ;
+					_val = "" ;
+					_res = "" ;
+					__ = ""
+				] ; 
+
+			_i < _tot ; 
+
+				[ 
+					_i = _i + 1 ;
+					_var = GetValue ( JSONListKeys ( _json ; "" ) ; _i ) ;
+					_val = JSONGetElement ( _json ; GetValue ( JSONListKeys ( _json ; "" ) ; _i ) ) ;
+					_res = _var & " = \"" & _val & "\" ;¶" & _res ;
+					__ = ""
+				] ; 
+
+			_res 
+
+			)
+
+		 & "
+
+		_null = \"\"
+
+	];
+		_null
+	)" 
+)
+
+
