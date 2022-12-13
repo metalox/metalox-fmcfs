@@ -1,5 +1,6 @@
 /* 
 WindowInfoSet ()
+v 1.0.1 2022-12-13
 ------------------------
 
 Sets window info into some global variables 
