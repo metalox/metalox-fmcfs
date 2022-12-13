@@ -1,5 +1,6 @@
 /*
 WindowCenterInWindow ( _TL ; _nHeight ; _nWidth )
+v 1.0.1 2022-12-13
 ------------------------
 
 Returns a Number to positon a New Window, or move a window, for Window Top or Window Left, depending on parameter "T" or "L"
