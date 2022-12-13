@@ -1,0 +1,63 @@
+/*
+WindowCenterInWindow
+------------------------
+Function Parameters:
+_TL
+_nHeight
+_nWidth
+------------------------
+
+Returns a Number to positon a New Window, or move a window, for Window Top or Window Left, depending on parameter "T" or "L"
+
+"T" returns a number for the New Window Top position
+"L" returns a number for the New Window Left position
+_nHeight is the window height of the new window,  required for "T"
+_nWidth is the window width of the new window,  required for "L"
+
+* Use the custom function: WindowInfoSet() prior to running this cf to set the following required global variables:
+
+$$_windowHeight
+$$_windowWidth
+$$_windowTop
+$$_windowBottom (for future use)
+$$_windowLeft
+$$_windowRight
+
+* Use the custom function: WindowInfoClear() - to clear the global variables when done
+
+Usage:
+------------------------
+
+Paramters: _TL_ ; _nHeight ; _nWidth
+
+    "T" to return a value for WindowTop 
+    "L" to return a value for WindowLeft
+
+    IF "T" is entered _nWidth is ignored (it can be set to 0)
+    IF "L" is entered _nHeight is ignored (it can be set to 0)
+
+------------------------
+
+Sample usage: CenterInWindow ( "T" ; 400 ; 0 )
+sample output (  100  )
+
+Sample usage: CenterInWindow ( "T" ; 400 ; 300 )
+sample output (  100 )
+
+Sample usage: CenterInWindow ( "L" ; 0; 300 )
+sample output (  120 )
+
+Sample usage: CenterInWindow ( "L" ; 400 ; 300 )
+sample output (  120 )
+
+Ben Miller 2020-03 ben@benlight.net
+
+*/
+
+Case(  
+  _TL = "T" ; 
+    Case ( _nHeight > Get(ScreenHeight) ; 0 ; ( $$_windowTop + ( $$_windowHeight / 2 )) - ( _nheight / 2 )) ;   
+  _TL = "L" ; ( $$_windowLeft + ( $$_windowWidth / 2 )) - ( _nwidth / 2 )  ;
+
+  ""
+  )
