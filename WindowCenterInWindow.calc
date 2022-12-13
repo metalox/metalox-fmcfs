@@ -1,5 +1,6 @@
 /*
-WindowCenterInWindow ( _TL ; _nHeight ; _n_width )
+WindowCenterInWindow ( _TL ; _nHeight ; _nWidth )
+------------------------
 
 Returns a Number to positon a New Window, or move a window, for Window Top or Window Left, depending on parameter "T" or "L"
 
@@ -8,29 +9,29 @@ Returns a Number to positon a New Window, or move a window, for Window Top or Wi
 _nHeight is the window height of the new window,  required for "T"
 _nWidth is the window width of the new window,  required for "L"
 
-Use the custom function  WindowInfoSet() prior to running this cf to set the following required global variables:
+* Use the custom function: WindowInfoSet() prior to running this cf to set the following required global variables:
 
-$$_windowScreenHeight
-$$_windowScreenWidth
-$$_windowScreenX = -1 for screen left of 0, 1 for screens right of 0
 $$_windowHeight
 $$_windowWidth
 $$_windowTop
+$$_windowBottom (for future use)
 $$_windowLeft
 $$_windowRight
-$$_windowCenterH
-$$_windowMiddleV
-$$_windowBottom (for future use)
 
-Use the custom Function WindowInfoClear() - to clear the global Variables when done
+* Use the custom function: WindowInfoClear() - to clear the global variables when done
 
 Usage:
+------------------------
+
 Paramters: _TL_ ; _nHeight ; _nWidth
+
     "T" to return a value for WindowTop 
     "L" to return a value for WindowLeft
 
     IF "T" is entered _nWidth is ignored (it can be set to 0)
     IF "L" is entered _nHeight is ignored (it can be set to 0)
+
+------------------------
 
 Sample usage: CenterInWindow ( "T" ; 400 ; 0 )
 sample output (  100  )
@@ -45,19 +46,13 @@ Sample usage: CenterInWindow ( "L" ; 400 ; 300 )
 sample output (  120 )
 
 Ben Miller 2020-03 ben@benlight.net
-Updated : 2020-08-02
-    Ensure that left edge of child window is not off the left screen edge
+
 */
 
 Case(  
   _TL = "T" ; 
-  Case ( _nHeight ≥ $$_windowScreenHeight ; 0 ; $$_windowMiddleV - ( _nheight / 2 )) ;   
-  _TL = "L" ; 
-  Case ( $$_windowScreenX = 1 ;
-	  // right screens (+0)
-	  Case ( _nWidth ≥ $$_windowScreenWidth ; 0 ; Max ( 0 ; $$_windowCenterH - ( _nWidth / 2 ))) ;
-	  // left screens (-1)
-	  Case ( _nWidth ≥ $$_windowScreenWidth ; $$_windowScreenWidth * -1 ; Max ( $$_windowScreenWidth * -1 ; $$_windowCenterH - ( _nWidth / 2 )))
-	);
+    Case ( _nHeight > Get(ScreenHeight) ; 0 ; ( $$_windowTop + ( $$_windowHeight / 2 )) - ( _nheight / 2 )) ;   
+  _TL = "L" ; ( $$_windowLeft + ( $$_windowWidth / 2 )) - ( _nwidth / 2 )  ;
+
   ""
-)
+  )
