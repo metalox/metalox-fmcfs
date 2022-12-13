@@ -1,8 +1,5 @@
 /* 
-WindowInfoSet
-------------------------
-Function Parameters:
-(none)
+WindowInfoSet ()
 ------------------------
 
 Sets window info into some global variables 
