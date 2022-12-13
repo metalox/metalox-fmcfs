@@ -1,8 +1,5 @@
 /* 
-WindowInfoClear
-------------------------
-Function Parameters:
-(none)
+WindowInfoClear()
 ------------------------
 
 Clears window info from some Gloabl Variables 
