@@ -3,7 +3,7 @@ WindowInfoClear()
 ------------------------
 
 Clears window info from some Gloabl Variables 
-Can be used after the custom function WindowCentreInWindow()
+should be used after the custom function WindowCentreInWindow()
 
 Ben Miller 2020-03 ben@benlight.net
 */
