@@ -1,11 +1,9 @@
-Case (
-	not ValueCount(~list); 
-    Evaluate ( "Let ( $$_VIRTUAL_VALUE_LIST = \"\" ; 0 )");
-
 Let ([
     ~columnNr = 1 ;
 	 ~column =
-	
+
+		Case ( not ValueCount(~list); "" ;
+
 		While ([ 
 		
 			~i = 0 ;
@@ -26,7 +24,8 @@ Let ([
 			
 			~newlist  
 			
-		);
+		)
+    );
 	
 	~setVar = Evaluate ( "Let ( $$_VIRTUAL_VALUE_LIST[" & ~columnNr  &"] = \"" & ~column & "\" ; 0 )" )
 	
@@ -34,5 +33,4 @@ Let ([
 	
 	0
 	
-	)
 )
