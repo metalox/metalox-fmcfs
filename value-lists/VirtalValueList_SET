@@ -1,0 +1,38 @@
+Case (
+	not ValueCount(~list); 
+    Evaluate ( "Let ( $$_VIRTUAL_VALUE_LIST = \"\" ; 0 )");
+
+Let ([
+    ~columnNr = 1 ;
+	 ~column =
+	
+		While ([ 
+		
+			~i = 0 ;
+			~x = ValueCount ( ~list );
+			~newlist = ""
+			
+			] ; 
+			
+			 ~i < ~x ; 
+			
+			[
+
+			~i = ~i + 1 ;
+ 
+			~newlist = List( ~newlist ; GetValue ( Substitute ( GetValue ( ~list ; ~i ) ; "," ; "¶" ) ; ~columnNr  ))
+			
+			]; 
+			
+			~newlist  
+			
+		);
+	
+	~setVar = Evaluate ( "Let ( $$_VIRTUAL_VALUE_LIST[" & ~columnNr  &"] = \"" & ~column & "\" ; 0 )" )
+	
+		];
+	
+	0
+	
+	)
+)
