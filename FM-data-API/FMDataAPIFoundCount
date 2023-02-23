@@ -1,0 +1,4 @@
+Case(
+		Left ( ~dataApiResponse ; 1 ) = "?" ; "" ;
+       JSONGetElement ( ~dataApiResponse ; "response.dataInfo.foundCount" )
+)
