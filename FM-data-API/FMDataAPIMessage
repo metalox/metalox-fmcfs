@@ -1,0 +1,4 @@
+Case(
+		Left ( ~dataApiResponse ; 1 ) = "?" ; "" ;
+       JSONGetElement ( ~dataApiResponse ; "messages[0].message" )
+)
