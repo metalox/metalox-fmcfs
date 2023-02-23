@@ -1,7 +1,7 @@
 
 /*
 CLARIS FILEMAKER CUSTOM FUNCTION
-FMDataAPIError( ~dataApiResponse ; ~index )
+FMDataAPIFieldData( ~dataApiResponse ; ~index )
 
 DESCRIPTION
     returns the fieldData JSON object at the specified index from FileMaker Data API response
