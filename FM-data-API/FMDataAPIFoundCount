@@ -1,6 +1,6 @@
 /*
 CLARIS FILEMAKER CUSTOM FUNCTION
-FMDataAPIError( ~dataApiResponse )
+FMDataAPIFoundCount( ~dataApiResponse )
 
 DESCRIPTION
     returns the found count from FileMaker Data API response
