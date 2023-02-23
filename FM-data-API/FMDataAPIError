@@ -6,7 +6,7 @@ DESCRIPTION
     returns the error code from FileMaker Data API response
 
  PARAMS
-    the response from a FielMaker Data API call
+    the response from a FileMaker Data API call
  
  EXAMPLES
  
