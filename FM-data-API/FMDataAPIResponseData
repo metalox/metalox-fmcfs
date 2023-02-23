@@ -3,7 +3,7 @@ CLARIS FILEMAKER CUSTOM FUNCTION
 FMDataAPIError( ~dataApiResponse )
 
 DESCRIPTION
-    returns the data JSON Object from FileMaker Data API response
+    returns the data JSON Array from FileMaker Data API response
 
  PARAMS
     the response from a FileMaker Data API call
