@@ -1,3 +1,23 @@
+/*
+CLARIS FILEMAKER CUSTOM FUNCTION
+FMDataAPIError( ~dataApiResponse )
+
+DESCRIPTION
+    returns the found count from FileMaker Data API response
+
+ PARAMS
+    the response from a FileMaker Data API call
+ 
+ EXAMPLES
+ 
+ 
+ DEPENDENCIES
+    --None--
+ 
+ CHANGELOG
+    2022-11-02: Benedick Miller: Created
+*/
+
 Case(
 		Left ( ~dataApiResponse ; 1 ) = "?" ; "" ;
        JSONGetElement ( ~dataApiResponse ; "response.dataInfo.foundCount" )
