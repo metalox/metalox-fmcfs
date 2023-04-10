@@ -1,0 +1,9 @@
+/*
+Returns the 1st. date of the month of the date as a FileMaker Date
+Ben Miller 2019-02-28
+b.miller@benlightsolutions.com
+*/
+
+Case( IsEmpty ( _date ) or not IsValid ( GetAsDate( _date )) ; "" ; 
+        Date ( Month ( _date ) ; 1 ; Year ( _date )  )
+)
