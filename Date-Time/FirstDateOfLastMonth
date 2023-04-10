@@ -1,0 +1,20 @@
+/*
+Custom Function: FirstDateOfLastMonth
+Parameters: _date
+========================
+Returns the 1st. date of the previous month as a FileMaker Date
+========================
+Ben Miller 2019-02-28
+ben@benlight.net
+*/
+
+Case( IsEmpty ( _date ) or not IsValid ( GetAsDate( _date )) ; "" ; 
+    Let ([
+        m = Month ( _date ) ;
+        last_m = Case ( m = 1 ; 12 ; m - 1 ) ;
+       y = Year ( _date ) ;
+       this_y = Case ( m = 1 ; y -1 ; y )
+    ];
+        Date ( last_m ; 1 ; this_y )
+    )
+)
