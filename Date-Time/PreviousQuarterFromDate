@@ -9,13 +9,4 @@ ben@benlight.net
 */
 
 
-Case( IsEmpty ( _date ) ; "" ; 
-
-	Let ([
-		~date = GetAsDate( _date );
-		~month = Month ( ~date )
-	];
-
-		Choose ( Ceiling ( ( ~month / 12 ) * 4 ) ; "" ; 4 ; 1 ; 2 ; 3 )
-	)
-)
+Case( IsEmpty ( _date ) ; "" ; Choose ( Ceiling ( ( Month ( _date ) / 12 ) * 4 ) ; "" ; 4 ; 1 ; 2 ; 3 ))
