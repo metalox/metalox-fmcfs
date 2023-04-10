@@ -1,0 +1,21 @@
+/*
+CustomFunction: FirstDateOfThisWeek
+Parameters: _date, start_day
+========================
+Returns the 1st. date of the week as a FileMaker Date
+--------------------------------
+start_day, number, day of week eg: 1 for Sunday, 2 for Monday
+start_day defaults to 2, Monday, if not specified
+--------------------------------	
+========================
+Ben Miller 2019-03-01
+ben@benlight.net
+*/
+
+Case( IsEmpty ( _date ) or not IsValid ( GetAsDate( _date )) ; "" ; 
+    Let ([
+        start_day = Case ( IsEmpty (start_day ) ; 2 ; start_day ) ;
+        dow = DayOfWeek ( _date ) 
+    ];
+        Case ( dow ≥ start_day ; _date - ( dow - start_day ) ; _date - ((7 - start_day) + dow)))
+)
