@@ -8,7 +8,7 @@ Ben Miller 2019-02-28
 ben@benlight.net
 */
 
-Case( IsEmpty ( _date ) or not IsValid ( GetAsDate( _date )) ; "" ; 
+Case( IsEmpty ( _date ) ; "" ; 
     Let([
        m = Month ( _date) ;
        next_m = Case ( m = 12 ; 1 ; m + 1 ) ;
