@@ -1,5 +1,5 @@
 /*
-CustomFunction: LastDateOfPreviousMonth
+CustomFunction: LastDateOfLastMonth
 Parameters: _date
 ========================
 Returns the last date of the previous month of the date as a FileMaker Date
