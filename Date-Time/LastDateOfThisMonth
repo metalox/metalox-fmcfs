@@ -1,0 +1,20 @@
+/*
+Custom Function: LastDateOfThisMonth
+Parameters: _date
+========================
+Returns the date of last day of the month from the date entered as a FileMaker date
+========================
+Ben Miller 2019-02-28
+ben@benlight.net
+*/
+
+Case( IsEmpty ( _date ) or not IsValid ( GetAsDate( _date )) ; "" ; 
+    Let([
+       m = Month ( _date) ;
+       next_m = Case ( m = 12 ; 1 ; m + 1 ) ;
+       y = Year ( _date ) ;
+       this_y = Case ( m = 12 ; y + 1 ; y )
+    ] ;
+        Date ( next_m ; 1 ; this_y ) - 1
+    )
+)
