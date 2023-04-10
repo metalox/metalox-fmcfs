@@ -11,7 +11,7 @@ Ben Miller 2019-03-01
 ben@benlight.net
 */
 
-Case( IsEmpty ( _date ) or not IsValid ( GetAsDate( _date )) ; "" ; 
+Case( IsEmpty ( _date ) ; "" ; 
     Let ([
         start_day = Case ( IsEmpty (start_day ) ; 2 ; start_day ) ;
         dow = DayOfWeek ( _date ) 
