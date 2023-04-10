@@ -1,0 +1,22 @@
+/*
+Custom Function: LastDateOfThisWeek
+Parameters: _date, start_day
+========================
+Returns the last date of the week as a FileMaker Date
+--------------------------------
+start_day, number, day of week eg: 1 for Sunday, 2 for Monday
+start_day defaults to 2, Monday, if not specified
+========================
+Ben Miller 2019-03-01
+ben@benlight.net
+*/
+
+Case( IsEmpty ( _date ) or not IsValid ( GetAsDate( _date )) ; "" ; 
+    Let ([
+        start_day = Case ( IsEmpty (start_day) ; 2 ; start_day ) ;
+        dow = DayOfWeek ( _date ) ;
+         r = Case ( dow ≥ start_day ; 6 - (dow - start_day) ; ( start_day - dow - 1 ) )
+    ];
+        _date + r
+    )
+)
