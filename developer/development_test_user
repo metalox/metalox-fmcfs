@@ -1,0 +1,38 @@
+/**
+ * =====================================================
+ * Development_Test_User ( )
+ * 
+ * PARAMETERS:
+ *		none
+ *
+ * RETURNS:
+ *		(bool) True or False based on proper   
+ *		evaluation
+ *
+ * DEPENDENCIES:
+ *		none
+ *
+ * NOTES:
+ 
+ *
+ * RELEASE:
+ *		2023-04-10 Benedick Miller
+ * 
+ * ACKOWLEGEMENTS:
+ * 		Idea copied from Developer CF by Matt Petrowsky
+ * =====================================================
+ * 
+ */
+
+Let ( [ 
+
+	~test_users = List ( "" ; "" ) ;  // Add names of the accounts which are valid test_user accounts
+	~extended_privileges = Get ( AccountExtendedPrivileges ) // Add "test_user" extended privilege to groups which are valid test_user groups
+				
+
+];
+	Get ( AccountPrivilegeSetName ) = "[Full Access]"
+	or ValueCount ( FilterValues ( ~test_users ; Get ( AccountName )))
+	or ValueCount ( FilterValues ( ~extended_privileges ;  "test_user" ))
+
+)
