@@ -1,0 +1,21 @@
+/*
+Custom Function: PreviousQuarterFromDate
+Parameters: _date
+========================
+Returns the previous quarter as a number
+========================
+Ben Miller 2023-04-10
+ben@benlight.net
+*/
+
+
+Case( IsEmpty ( _date ) ; "" ; 
+
+	Let ([
+		~date = GetAsDate( _date );
+		~month = Month ( ~date )
+	];
+
+		Choose ( Ceiling ( ( ~month / 12 ) * 4 ) ; "" ; 4 ; 1 ; 2 ; 3 )
+	)
+)
