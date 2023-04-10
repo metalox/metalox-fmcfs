@@ -1,7 +1,11 @@
 /*
+CustomFunction: FirstDateOfThisMonth
+Parameters: _date
+========================
 Returns the 1st. date of the month of the date as a FileMaker Date
+========================
 Ben Miller 2019-02-28
-b.miller@benlightsolutions.com
+ben@benlight.net
 */
 
 Case( IsEmpty ( _date ) or not IsValid ( GetAsDate( _date )) ; "" ; 
