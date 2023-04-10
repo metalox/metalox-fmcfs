@@ -1,0 +1,21 @@
+/*
+Custom Function: ThisQuarterFromDate
+Parameters: _date
+========================
+Returns the quarter of the date as a number
+========================
+Ben Miller 2023-04-10
+ben@benlight.net
+*/
+
+
+Case( IsEmpty ( _date ) ; "" ; 
+
+	Let ([
+		~date = GetAsDate( _date );
+		~month = Month ( ~date )
+	];
+
+		Ceiling ( ( ~month / 12 ) * 4 )
+	)
+)
