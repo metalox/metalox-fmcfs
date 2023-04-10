@@ -1,0 +1,12 @@
+/*
+Custom Function: FirstDateOfQuarter
+Parameters: _quarter,  _year
+========================
+Returns the 1st. date of the specified quarter as a FileMaker Date
+========================
+Ben Miller 2023-04-10
+ben@benlight.net
+*/
+
+Case( _quarter + 0 < 1 or _quarter > 4 or IsEmpty ( _year ) ; "" ; Choose ( _quarter ; "" ; Date ( 1 ; 1 ; _year ); Date ( 4 ; 1 ; _year ) ; Date ( 7 ; 1 ; _year ) ; Date ( 10 ; 1 ; _year ) )
+)
