@@ -8,6 +8,6 @@ Ben Miller 2019-02-28
 ben@benlight.net
 */
 
-Case( IsEmpty ( _date ) or not IsValid ( GetAsDate( _date )) ; "" ; 
+Case( IsEmpty ( _date ) ; "" ; 
         Date ( Month ( _date ) ; 1 ; Year ( _date )  )
 )
