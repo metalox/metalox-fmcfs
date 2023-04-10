@@ -1,0 +1,13 @@
+/*
+CustomFunction: LastDateOfPreviousMonth
+Parameters: _date
+========================
+Returns the last date of the previous month of the date as a FileMaker Date
+========================
+Ben Miller 2019-02-28
+ben@benlight.net
+*/
+
+Case( IsEmpty ( _date ) ; "" ; 
+        Date ( Month ( _date ) ; 1 ; Year ( _date )  ) -1
+)
