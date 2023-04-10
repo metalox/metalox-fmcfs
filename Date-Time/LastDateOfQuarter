@@ -1,0 +1,12 @@
+/*
+Custom Function: LastDateOfQuarter
+Parameters: _quarter,  _year
+========================
+Returns the last date of the specified quarter as a FileMaker Date
+========================
+Ben Miller 2023-04-10
+ben@benlight.net
+*/
+
+Case( _quarter + 0 < 1 or _quarter > 4 or IsEmpty (_year) ; "" ; Choose ( _quarter ; "" ; Date ( 3 ; 31 ; _year ); Date ( 6 ; 30 ; _year ) ; Date ( 9 ; 30 ; _year ) ; Date ( 12 ; 31 ; _year ) )
+)
