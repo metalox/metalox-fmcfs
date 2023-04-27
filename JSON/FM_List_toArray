@@ -11,19 +11,11 @@ If you need to deal with trailing carrige returns, or empty values, clean the li
 
 Number values are saved as numbers, other values are saved as strings.
 
-Example input: (example text from a field)
-the
-237
+Sample input:
+"the¶237¶¶rain{¶[in] spain¶falls\in\the¶pl.ain}¶¶¶"
 
-rain{
-[in] spain
-falls\in\the
-pl.ain}
-
-
-Example Output:
+Sample Output:
 ["the",237,"","rain{","[in] spain","falls\\in\\the","pl.ain}","",""]
-
 
 
 Recursive: the custom function is not recursive, the while function is recursive
