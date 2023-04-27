@@ -1,0 +1,54 @@
+/*
+Custom Function: FM_List_toArray
+Parameters: _List
+========================
+Converts a FileMaker List to a JSON Array
+Requires FM 18 or greater with the While Function
+
+By design empty values are set as empty strings in the array, not to null,
+this makes the array easy to convert back to a FileMaker list.
+If you need to deal with trailing carrige returns, or empty values, clean the list before using this function.
+
+Number values are saved as numbers, other values are saved as strings.
+
+Example input: (example text from a field)
+the
+237
+
+rain{
+[in] spain
+falls\in\the
+pl.ain}
+
+
+Example Output:
+["the",237,"","rain{","[in] spain","falls\\in\\the","pl.ain}","",""]
+
+
+
+Recursive: the custom function is not recursive, the while function is recursive
+Dependencies: none 
+========================
+Ben Miller 2023-04-27
+ben@benlight.net
+*/
+
+While ( 
+	[
+		~l= _List ;
+		~vcl = ValueCount ( ~l ) ;
+		~a = "[]" ;
+		~i = 1
+	];
+	
+		~i ≤ ~vcl ;
+		 
+	[
+		~v = GetValue ( ~l ; ~i ) ;
+		~a = ( JSONSetElement ( ~a ; ~i-1 ; ~v ; Case ( IsEmpty (~v) ; JSONString ; Exact ( GetAsNumber (~v) ; ~v ) ; JSONNumber ; JSONString) ));
+		~i = ~i + 1
+	];
+	 
+		~a 
+
+)
