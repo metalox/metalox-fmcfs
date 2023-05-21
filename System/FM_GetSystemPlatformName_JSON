@@ -1,0 +1,9 @@
+JSONSetElement ( "{}" 
+
+	;[ "1" ; "macOS" ; JSONString ]
+	;[ "-2" ; "Windows" ; JSONString ]
+	;[ "3" ; "iOS" ; JSONString ]
+	;[ "4" ; "WebDirect" ; JSONString ]
+	;[ "5" ; "CentOS Linux" ; JSONString ]
+	;[ "8" ; "Ubuntu Linux" ; JSONString ]
+)
