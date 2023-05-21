@@ -1,9 +1,33 @@
-JSONSetElement ( "{}" 
+/*
+Custom Function: FM_GetSystemPlatformName_JSON
+Parameters: a number, as returned by Get(SystemPlatform)
+Dependencies: none
+Recursive: no
+========================
+v 1.0.0 2022-12-13 Benedick Miller, ben@benlight.net
+========================
+Returns the name of the system platform from the number returned by the FM Function Get(SystemPlatform)
+*/
 
-	;[ "1" ; "macOS" ; JSONString ]
-	;[ "-2" ; "Windows" ; JSONString ]
-	;[ "3" ; "iOS" ; JSONString ]
-	;[ "4" ; "WebDirect" ; JSONString ]
-	;[ "5" ; "CentOS Linux" ; JSONString ]
-	;[ "8" ; "Ubuntu Linux" ; JSONString ]
+Case ( isempty ( ~system_platform_number ) ; "" ;
+
+	Let ([
+	
+	~obj =
+	
+	JSONSetElement ( "{}" 
+	
+		;[ "1" ; "macOS" ; JSONString ]
+		;[ "-2" ; "Windows" ; JSONString ]
+		;[ "3" ; "iOS" ; JSONString ]
+		;[ "4" ; "WebDirect" ; JSONString ]
+		;[ "5" ; "CentOS Linux" ; JSONString ]
+		;[ "8" ; "Ubuntu Linux" ; JSONString ]
+	)
+	];
+	
+		JSONGetElement ( ~obj ; ~system_platform_number )
+	
+	)
+
 )
