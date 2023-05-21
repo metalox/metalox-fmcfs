@@ -7,6 +7,10 @@ Recursive: no
 v 1.0.0 2022-12-13 Benedick Miller, ben@benlight.net
 ========================
 Returns the name of the system platform from the number returned by the FM Function Get(SystemPlatform)
+
+Example usage: FM_GetSystemPlatformName_JSON ( get(SystemPlatform ) )
+Example result: macOS
+
 */
 
 Case ( isempty ( ~system_platform_number ) ; "" ;
