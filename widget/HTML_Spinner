@@ -1,6 +1,6 @@
 /*==========================================================================================
 
-Function:		HTML_Spinner ( Value )
+Function:		HTML_Spinner ( szizePX ; Color ; bgColor )
 
 Purpose:		Draws a loading spinner similar to those used by native Apple applications of the specified size in PX, of the specigied color/background color.
 
