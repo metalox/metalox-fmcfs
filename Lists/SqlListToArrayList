@@ -1,0 +1,91 @@
+/*
+Custom Function: SQL_List_toArrayList
+Parameters: ~sql_list, ~column_delimiter
+========================
+Converts a List of delimited values to a List of JSON Arrays
+Requires FM 18 or greater with the While Function
+
+Designed to convert the output of an ExecuteSQL() query to a list of JSON arrays
+will also work for any other list of delimited values
+
+Sample input:
+
+abc,101
+def,42
+xzy,99
+
+Sample Output:
+
+["abc",101]
+["def",42]
+["xyz",99]
+
+
+By design empty values are set as empty strings in the arrays, not to null,
+
+Number values are saved as numbers, other values are saved as strings.
+
+Input must a be a list.
+Column delimiter is "," be default, if not specified. Another delimiter may be specified, but not ¶
+
+Recursive: the custom function is not recursive, the while function is recursive
+Dependencies: none 
+========================
+Benedick Miller 2023-09-15
+ben@benlight.net
+*/
+
+Case ( 
+  
+  IsEmpty (~sql_list) ; "" ;
+  PatternCount ( ~column_delimiter ; "¶" ) ; "" ; 
+
+  While ( 
+
+	   [
+		~l = ~sql_list;
+       ~d = Case (IsEmpty (~column_delimiter) ; "," ; ~column_delimiter );
+		~lc = ValueCount ( ~l );
+       ~new_list = "" ;
+		~i = 1
+	   ];
+	
+		 ~i <= ~lc ;
+		 
+	[
+
+      ~r = 
+      While ( 
+
+        [
+          ~r = Substitute ( GetValue ( ~l ; ~i ) ; ~d ; "¶" );
+          ~rc = ValueCount( ~r );
+		   ~a = "[]";
+          ~j = 1
+          
+        ]; 
+
+        ~j <= ~rc ;
+        
+         [
+         ~v = GetValue ( ~r ; ~j  ) ;
+
+		  ~a = ( JSONSetElement ( ~a ; ~j-1 ; ~v ; Case ( IsEmpty (~v ) ; JSONString ; Exact ( GetAsNumber (~v) ; ~v ) ; JSONNumber ; JSONString)));
+
+         ~j = ~j + 1
+
+        ];
+
+        ~a
+
+        );
+
+       ~new_list = List (~new_list ; ~r );
+       ~i = ~i + 1
+
+	  ];
+	 
+		~new_list 
+
+  )
+)
