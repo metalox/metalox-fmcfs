@@ -1,5 +1,5 @@
 /*
-Custom Function: SQL_List_toArrayList
+Custom Function: SqlListToArrayList
 Parameters: ~sql_list, ~column_delimiter
 ========================
 Converts a List of delimited values to a List of JSON Arrays
