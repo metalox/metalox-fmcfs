@@ -1,5 +1,5 @@
 /*
-Custom Function: Prettify_JSON
+Custom Function: PrettifyJSON
 Parameters: ~json
 ========================
 Prettifies Json retrunedd by FM JSONFormatElements
