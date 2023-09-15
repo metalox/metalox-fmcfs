@@ -1,0 +1,9 @@
+/*
+Custom Function: JSONPrettify
+Parameters: ~json
+========================
+Prettifies JSON
+Benedick Miller ben@benlight.net 2023
+*/
+
+Substitute (  JSONFormatElements ( ~json ) ; Char (9) ; "    "  )

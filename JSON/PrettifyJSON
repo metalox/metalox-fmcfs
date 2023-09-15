@@ -1,9 +1,0 @@
-/*
-Custom Function: PrettifyJSON
-Parameters: ~json
-========================
-Prettifies Json retrunedd by FM JSONFormatElements
-Benedick Miller ben@benlight.net 2023
-*/
-
-Substitute ( ~json ; Char (9) ; "    " )
