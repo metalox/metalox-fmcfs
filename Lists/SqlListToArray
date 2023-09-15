@@ -1,5 +1,5 @@
 /*
-Custom Function: SqlListToArrayList
+Custom Function: SqlListToArray
 Parameters: ~sql_list, ~column_delimiter
 ========================
 Requires FM 18 or greater with the While Function.
