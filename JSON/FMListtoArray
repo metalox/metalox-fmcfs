@@ -1,6 +1,6 @@
 /*
-Custom Function: FM_List_toArray
-Parameters: _List
+Custom Function: FmListToArray
+Parameters: ~list
 ========================
 Converts a FileMaker List to a JSON Array
 Requires FM 18 or greater with the While Function
@@ -8,6 +8,8 @@ Requires FM 18 or greater with the While Function
 By design empty values are set as empty strings in the array, not to null,
 this makes the array easy to convert back to a FileMaker list.
 If you need to deal with trailing carrige returns, or empty values, clean the list before using this function.
+
+The list may be a list of JSON Objects or JSON Arrays.
 
 Number values are saved as numbers, other values are saved as strings.
 
@@ -21,23 +23,25 @@ Sample Output:
 Recursive: the custom function is not recursive, the while function is recursive
 Dependencies: none 
 ========================
+Update 2023-09-15 - Name changed. Function now allows for Lists of JSON Objects & Arrays
 Benedick Miller 2023-04-27
 ben@benlight.net
 */
 
 While ( 
 	[
-		~l= _List ;
-		~vcl = ValueCount ( ~l ) ;
+
+       ~l = ~list ;
+		~c = ValueCount ( ~l ) ;
 		~a = "[]" ;
 		~i = 1
 	];
 	
-		~i ≤ ~vcl ;
+		~i ≤ ~c ;
 		 
 	[
 		~v = GetValue ( ~l ; ~i ) ;
-		~a = ( JSONSetElement ( ~a ; ~i-1 ; ~v ; Case ( IsEmpty (~v) ; JSONString ; Exact ( GetAsNumber (~v) ; ~v ) ; JSONNumber ; JSONString) ));
+		~a = ( JSONSetElement ( ~a ; ~i-1 ; ~v ; Case ( IsEmpty (~v) ; JSONString ; Exact ( GetAsNumber (~v) ; ~v ) ; JSONNumber ;  Left ( JSONFormatElements(~v) ; 1 ) <> "?" ; Case ( Left (~v ; 1 ) = "[" ; JSONArray ; JSONObject ) ; JSONString) ));
 		~i = ~i + 1
 	];
 	 
