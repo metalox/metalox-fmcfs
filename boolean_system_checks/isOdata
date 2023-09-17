@@ -1,1 +1,1 @@
-PatternCount ( Get ( AccountPrivilegeSetName ) ; "odata" )
+PatternCount ( Get ( AccountPrivilegeSetName ) ; "fmodata" )
