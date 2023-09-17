@@ -1,0 +1,1 @@
+LeftWords ( Get ( ApplicationVersion )  ; 1 ) = "Server"
