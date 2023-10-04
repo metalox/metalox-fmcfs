@@ -1,0 +1,40 @@
+/*
+Custom Function: positionOfValue
+Parameters: ~text, ~searchValue, ~start , ~occurance
+========================
+Works like FileMaker native Position() for return delimirted lists.
+
+Returns the value number (position) of the search value in the return delimirted list.
+REQUIRES FileMaker 18 + with While() Function
+
+~text - text, 			a return delimted list (expected).
+~searchValue - text, 	a value to match in the list.
+~start - number		the value number where to start the list, eg 1 to start at the first value.
+~occurance - number	which occurance to return, eg 1 for the first occurance. If this number is negative run the search in reverse from the last value to the first.
+
+EG: positionOfValue ( "list of values" ; "search value" ; 1 ; 1 ) will return the value number of the first occurance of "search value"
+EG: positionOfValue ( "list of values" ; "search value" ; 1 ; -1 ) will return the value number of the last occurance of "search value"
+
+Recursive: the custom function is not recursive, the while function is recursive
+Dependencies: none 
+========================
+Benedick Miller 2023-10 ben@benlight.net
+*/
+
+While ([  
+	~r = ""  ;
+	~count = 0 ;
+	~success = 0 ;
+	~x = ValueCount( ~text )  ; 
+	~p = If ( ~occurance < 0 ;  ( ~x + 1 ) ;  0 )  ;
+        ~i = 0       
+  ] ; 
+  	not ~success and ~x > ~i ;
+  [ 
+	~i = ~i + 1 ;
+	~p = If ( ~occurance  < 0 ; ~p -1 ; ~p + 1 ) ;
+ 	~count =  Case (   ~start > ~i ;  0  ;   GetValue ( ~text ; ~p ) = ~searchValue  ;   ~count + 1 ;  ~count  ) ;
+  ~success = If (~count = Abs( ~occurance ) ; ~p ; 0 )
+ ] ; 
+	~success
+)
