@@ -7,7 +7,6 @@ Works like FileMaker native Position() for return delimirted lists.
 Returns the value number (position) of the search value in the return delimirted list.
 REQUIRES FileMaker 18 + with While() Function
 
-
 sample input: positionOfValue ( "a¶b¶bc¶d¶b" ; "b" ; 1 ; 1 )
 sample output: 2
 
