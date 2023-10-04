@@ -6,10 +6,10 @@ Parameters: ~text, ~searchValue
 Returns a list (with no trailing ¶) of position numbers of the seachValue in text
 REQUIRES FileMaker 18 + with While() Function
 
-sample input: positionValues18 ( "a¶b¶c¶d" ; "b" )
+sample input: positionListOfValue ( "a¶b¶c¶d" ; "b" )
 sample output: 2
 
-sample input: positionValues18 ( "a¶b¶bc¶d¶b" ; "b" )
+sample input: positionListOfValue ( "a¶b¶bc¶d¶b" ; "b" )
 sample output: 2¶5
 
 Benedick Miller 2020-03 ben@benlight.net
