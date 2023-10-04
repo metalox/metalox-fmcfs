@@ -1,0 +1,29 @@
+/*
+Custom Function: positionListOfValue
+Parameters: ~text, ~searchValue
+========================
+
+Returns a list (with no trailing ¶) of position numbers of the seachValue in text
+REQUIRES FileMaker 18 + with While() Function
+
+sample input: positionValues18 ( "a¶b¶c¶d" ; "b" )
+sample output: 2
+
+sample input: positionValues18 ( "a¶b¶bc¶d¶b" ; "b" )
+sample output: 2¶5
+
+Benedick Miller 2020-03 ben@benlight.net
+*/
+
+While ([  
+    r = "" ;
+    i = 0  ;
+    x = ValueCount( text ) 
+  ] ; 
+    i < x ; 
+  [ 
+    i = i + 1 ;
+    r = Case ( GetValue ( text ; i ) = searchValue ;   List ( r ; i )  ; r ) 
+  ] ; 
+  r
+)
