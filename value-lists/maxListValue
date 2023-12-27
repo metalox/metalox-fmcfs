@@ -1,8 +1,10 @@
 /*
-FileMaker Custom Function: maxValueWhile
+FileMaker Custom Function: maxListValue
 Parameters: ~list
 ========================
 Returns the maximum value from a list
+Sample input: (1¶2¶3)
+Sample output: 3
 
 Benedick Miller 2023
 */
