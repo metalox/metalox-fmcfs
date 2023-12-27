@@ -1,8 +1,11 @@
 /*
-FileMaker Custom Function: minValueWhile
+FileMaker Custom Function: minListValue
 Parameters: ~list
 ========================
 Returns the minimum value from a list
+
+Sample input: (1¶2¶3)
+Sample output: 1
 
 Benedick Miller 2023
 */
