@@ -1,0 +1,29 @@
+/*
+FileMaker Custom Function: maxValueWhile
+Parameters: ~list
+========================
+Returns the maximum value from a list
+
+Benedick Miller 2023
+*/
+
+While ( [ 
+
+~r = GetValue( ~list ; 1 ) ;
+~x = ValueCount ( ~list ) ;
+~i = 0
+
+ ]; 
+
+~x > ~i 
+
+;[
+
+~i = ~i + 1 ;
+~v = GetValue ( ~list ; ~i );
+~r = If ( ~v > ~r ; ~v ; ~r )
+]; 
+
+~r
+
+)
