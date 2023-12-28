@@ -7,7 +7,7 @@ Returns the minimum value from a list
 Sample input: (1¶2¶3)
 Sample output: 1
 
-Benedick Miller 2023
+Benedick Miller ben@benlight.net 2023
 */
 
 While ( [ 
