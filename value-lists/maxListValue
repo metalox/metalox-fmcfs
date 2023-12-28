@@ -24,6 +24,7 @@ While ( [
 ~i = ~i + 1 ;
 ~v = GetValue ( ~list ; ~i );
 ~r = If ( ~v > ~r ; ~v ; ~r )
+
 ]; 
 
 ~r
