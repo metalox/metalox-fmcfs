@@ -1,0 +1,14 @@
+/*
+FileMaker Custom Function: ISOdate
+Paramater: ~date
+
+result will be YYYYMMDD format
+effectively: "add" the yyyy0000 + mm00 + dd, thus padding for leading 0's where needed!
+
+Copied from a technique By Beverly Voth
+*/
+
+ 
+( Year ( ~date ) * 10000 ) + ( Month ( ~date ) * 100 ) + Day ( ~date )
+
+
