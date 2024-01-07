@@ -1,6 +1,6 @@
 /*
-FileMaker Custom Function: dateAsYYYMMDD
-Paramater: ~date
+FileMaker Custom Function: dateAsYMD
+Parameter: ~date
 
 Sample input: 31.1.2024
 Sample input: 1/31/2024
