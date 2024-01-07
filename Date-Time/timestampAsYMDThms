@@ -5,6 +5,8 @@ Parameter: ~timestamp
 Sample input: 31.1.2024 12:2:35
 Sample input: 1/31/2024 12:2:35
 Sample output: 20240131T120235
+
+Created: 2023-01-07 Benedick Miller ben@benlight.net 
 */
 
 Year ( ~timestamp ) &
