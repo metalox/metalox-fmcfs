@@ -1,0 +1,15 @@
+/*
+FileMaker Custom Function: dateAsYYYMMDD
+Paramater: ~date
+
+Sample input: 31.1.2024
+Sample input: 1/31/2024
+Sample output: 20240131
+*/
+
+ 
+Year ( ~date ) &
+Right ( "0" & Month ( ~date ) ; 2 ) &
+Right ( "0" & Day ( ~date ) ; 2 )
+
+
