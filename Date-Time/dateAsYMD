@@ -5,11 +5,11 @@ Parameter: ~date
 Sample input: 31.1.2024
 Sample input: 1/31/2024
 Sample output: 20240131
+
+Created: 2023-01-07 Benedick Miller ben@benlight.net 
 */
 
  
 Year ( ~date ) &
 Right ( "0" & Month ( ~date ) ; 2 ) &
 Right ( "0" & Day ( ~date ) ; 2 )
-
-
