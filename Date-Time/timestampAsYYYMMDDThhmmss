@@ -1,0 +1,7 @@
+Year ( ~timestamp ) &
+Right ( "0" & Month ( ~timestamp ) ; 2 ) &
+Right ( "0" & Day ( ~timestamp ) ; 2 ) &
+"T" &
+Right ( "0" & Hour ( ~timestamp ) ; 2 ) &
+Right ( "0" & Minute ( ~timestamp ) ; 2 ) &
+Right ( "0" & Seconds ( ~timestamp ) ; 2 )
