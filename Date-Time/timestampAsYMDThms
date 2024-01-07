@@ -1,6 +1,6 @@
 /*
-FileMaker Custom Function: timestampAsYYYMMDDThhmmss
-Paramater: ~timestamp
+FileMaker Custom Function: timestampAsYMDThms
+Parameter: ~timestamp
 
 Sample input: 31.1.2024 12:2:35
 Sample input: 1/31/2024 12:2:35
