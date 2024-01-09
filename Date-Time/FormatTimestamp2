@@ -1,0 +1,52 @@
+/* Function FormatTimestamp2 ( format ; tstamp )
+Formats a timestamp according to format, replacing placeholders with date/time data.
+If tstamp is a null string ("") then the current date/time are used.
+
+Renamed to FormatTimestamp2
+
+By Tim Mansour
+https://www.briandunning.com/cf/629
+*/
+
+Let ( [
+	indata = If ( GetAsText ( tstamp ) = "" ; 
+				Timestamp ( Get ( CurrentDate ) ; Get ( CurrentTime ) ) ; // default to now
+			// else
+				tstamp ) ;
+	hr = Hour ( indata ) ;
+	hr12 = Mod ( hr - 1 ; 12 ) + 1
+	] ;
+
+	Substitute ( format ;
+		[ "[HH]" ; Right ( "0" & hr ; 2 ) ] ;
+		[ "[H]" ; hr ] ;
+		[ "[hh]" ; Right ( "0" & hr12 ; 2) ] ;
+		[ "[h]" ; hr12 ] ;
+		[ "[mm]" ; Right ( "0" & Minute ( indata ) ; 2 ) ] ;
+		[ "[m]" ; Minute ( indata ) ] ;
+		[ "[ss]" ; Right ( "0" & Seconds ( indata ) ; 2 ) ] ;
+		[ "[s]" ; Seconds ( indata ) ] ;
+		[ "[am]" ; If ( hr < 12 ; "am" ; "pm" ) ] ;
+		[ "[pm]" ; If ( hr < 12 ; "am" ; "pm" ) ] ;
+		[ "[AM]" ; If ( hr < 12 ; "AM" ; "PM" ) ] ;
+		[ "[PM]" ; If ( hr < 12 ; "AM" ; "PM" ) ] ;
+		[ "[Dayname]" ; DayName ( indata ) ] ;
+		[ "[dayname]" ; Lower ( DayName ( indata ) ) ] ;
+		[ "[DAYNAME]" ; Upper ( DayName ( indata ) ) ] ;
+		[ "[Day]" ; Left ( DayName ( indata ) ; 3 ) ] ;
+		[ "[day]" ; Lower ( Left ( DayName ( indata ) ; 3 ) ) ] ;
+		[ "[DAY]" ; Upper ( Left ( DayName ( indata ) ; 3 ) ) ] ;
+		[ "[DD]" ; Right ( "0" & Day ( indata ) ; 2 ) ] ;
+		[ "[D]" ; Day ( indata ) ] ;
+		[ "[MM]" ; Right ( "0" & Month ( indata ) ; 2 ) ] ;
+		[ "[M]" ; Month ( indata ) ] ;
+		[ "[Month]" ; MonthName ( indata ) ] ;
+		[ "[month]" ; Lower ( MonthName ( indata ) ) ] ;
+		[ "[MONTH]" ; Upper ( MonthName ( indata ) ) ] ;
+		[ "[Mon]" ; Left ( MonthName ( indata ) ; 3 ) ] ;
+		[ "[mon]" ; Lower ( Left ( MonthName ( indata ) ; 3 ) ) ] ;
+		[ "[MON]" ; Upper ( Left ( MonthName ( indata ) ; 3 ) ) ] ;
+		[ "[YYYY]" ; Year ( indata ) ] ;
+		[ "[YY]" ; Right ( Year ( indata ) ; 2 ) ] 
+	)
+)
