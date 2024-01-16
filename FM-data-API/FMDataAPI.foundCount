@@ -1,0 +1,9 @@
+
+FMdataAPI.Ω ( "FoundCount" ; ~data_api_response ; "" ; "" )
+
+/*
+	FileMaker Custom Function: FMDataAPI.foundCount ( ~data_api_response )
+
+  Return Found Count from FM Data API Response
+
+*/
