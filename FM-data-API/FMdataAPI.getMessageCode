@@ -1,0 +1,7 @@
+FMdataAPI.Ω( "MessageCode" ; ~data_api_response ; "" ; "" )
+
+/*
+FileMaker Custom Function: FMdataAPI.getMessageCode ( ~data_api_response )
+
+Return messages[0].code from FM Data API response
+*/
