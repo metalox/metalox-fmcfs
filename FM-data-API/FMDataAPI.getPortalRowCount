@@ -1,0 +1,8 @@
+
+FMdataAPI.Ω ( "PortalDataRowCount" ; ~data_api_response ; ~index ; ~key )
+
+/*
+FileMaker Custom Function: FMDataAPI.getPortalRowCount ( ~data_api_response ; ~index ; ~key )
+
+Returns count of portal rows for the key by index
+*/
