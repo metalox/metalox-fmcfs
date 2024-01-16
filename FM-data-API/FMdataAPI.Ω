@@ -1,0 +1,136 @@
+/*
+WORK IN PROGRESS!!
+
+FMdataAPI.Ω ( ~query ; ~data_api_response ; ~index ; ~key )
+
+Primary function to: Return results from the FileMaker DATA API response object.
+FMdataApi.<function name> functions call this function.
+
+Parameters:
+~query (req)
+~data_api_response (req)
+~index (opt)
+~key (opt)
+
+Benedick Miller ben@benlight.net
+
+*/
+
+Let ( ~index = ~index + 0 ;
+
+Case ( IsEmpty (~query ) or IsEmpty ( ~data_api_response ) ; "" ;
+
+Left ( JSONFormatElements ( ~data_api_response ) ; 1 ) = "?" ; "?" ;
+
+//------------------------
+
+~query = "ErrorCheck" ;
+
+Let (
+	~q = JSONGetElement ( ~data_api_response ; "messages[0].code" ) ;
+	Case ( Left ( ~q ; 1 ) = "?" ; "?" ;  ~q ; True ; False ) 
+);
+
+//------------------------
+
+~query = "MessageCode" ;
+
+Let (
+	~q =   JSONGetElement ( ~data_api_response ; "messages[0].code" );
+	If ( Left ( ~q ; 1 ) = "?" ; "?" ;  ~q  ) 
+);
+
+//------------------------
+
+~query = "Message" ;
+
+Let (
+	 ~q = JSONGetElement ( ~data_api_response ; "messages[0].message" );
+
+	If ( Left ( ~q ; 1 ) = "?" ; "?" ;  ~q  ) 
+);
+
+//------------------------
+
+~query = "FoundCount" ;
+
+Let (
+	 ~q = JSONGetElement ( ~data_api_response ; "response.dataInfo.foundCount" );
+
+	If ( Left ( ~q ; 1 ) = "?" ; "?" ;  ~q  ) 
+);
+
+//------------------------
+
+~query = "Data" ;
+
+Let (
+	 ~q = JSONGetElement ( ~data_api_response ; "response.data" );
+
+	If ( Left ( ~q ; 1 ) = "?" ; "?" ;  ~q  ) 
+);
+
+
+//------------------------
+
+~query = "FieldData" ;
+
+Let (
+	 ~q = JSONGetElement ( ~data_api_response ; "response.data.[" & ~index & "].fieldData" );
+
+	If ( Left ( ~q ; 1 ) = "?" ; "?" ;  ~q  ) 
+);
+
+//------------------------
+
+~query = "PortalDataKeys" ;
+
+Let (
+	 ~q = JSONListKeys( ~data_api_response ; "response.data.[" & ~index & "].portalData" );
+
+	If ( Left ( ~q ; 1 ) = "?" ; "?" ;  ~q  ) 
+);
+
+//------------------------
+
+~query = "PortalData" ;
+
+Case ( IsEmpty ( ~key ) ; "" ;
+Let (
+	 ~q =  JSONGetElement ( ~data_api_response ; "response.data.[" & ~index & "].portalData." & ~key );
+
+	If ( Left ( ~q ; 1 ) = "?" ; "?" ;  ~q  ) 
+)
+);
+
+//------------------------
+
+ ~query = "PortalDataRowCount" ;
+ 
+Case ( IsEmpty ( ~key ) ; "" ;
+Let ([
+	 ~q =  JSONGetElement ( ~data_api_response ; "response.data.[" & ~index & "].portalData." & ~key ) ;
+        ~q2 = JSONListValues (  ~q ; "" )
+	];
+	If ( Left ( ~q ; 1 ) = "?" or  Left ( ~q2 ; 1 ) = "?" ; "" ;   ValueCount (  ~q2  ) )  
+)
+);
+
+//------------------------
+
+  ~query = "FieldMetaData" ;
+
+Let (
+	 ~q =   JSONGetElement ( ~data_api_response ; "response.fieldMetaData" );
+
+	If ( Left ( ~q ; 1 ) = "?" ; "?" ;  ~q  ) 
+);
+
+
+//------------------------
+
+
+"" // fallback
+
+) // close Case
+) // close Let
