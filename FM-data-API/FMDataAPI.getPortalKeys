@@ -1,0 +1,8 @@
+
+FMdataAPI.Ω ( "PortalDataKeys" ; ~data_api_response ; ~index ; ""  )
+
+/*
+FileMaker Custom Function: FMDataAPI.getPortalKeys ( ~data_api_response ; ~index )
+
+Returns List of Portal Data Keys
+*/
