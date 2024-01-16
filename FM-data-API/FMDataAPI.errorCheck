@@ -2,5 +2,6 @@ FMdataAPI.Ω( "ErrorCheck" ; ~data_api_response ; "" ; ""  )
 
 /*
   FileMaker Custom Function: FMDataAPI.errorCheck ( ~data_api_response )
+
   Return true or false or ? from FM Data API response, Message Code
 */
