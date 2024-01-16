@@ -3,7 +3,7 @@ FMdataAPI.Ω ( "Data" ; ~data_api_response ; "" ; ""  )
 
 
 /*
-  FileMaker Custom Function: FMDataAPI.getData ( ~data_api_response )
+FileMaker Custom Function: FMDataAPI.getData ( ~data_api_response )
 
-  Return response.data from FM DATA API response
+Return response.data from FM DATA API response
 */
