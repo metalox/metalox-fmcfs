@@ -28,7 +28,7 @@ Left ( JSONFormatElements ( ~data_api_response ) ; 1 ) = "?" ; "?" ;
 
 Let (
 	~q = JSONGetElement ( ~data_api_response ; "messages[0].code" ) ;
-	Case ( Left ( ~q ; 1 ) = "?" ; "?" ;  ~q ; True ; False ) 
+	Case ( Left ( ~q ; 1 ) = "?" ; "?" ; ~q ; True ; False ) 
 );
 
 //------------------------
@@ -37,7 +37,7 @@ Let (
 
 Let (
 	~q =   JSONGetElement ( ~data_api_response ; "messages[0].code" );
-	If ( Left ( ~q ; 1 ) = "?" ; "?" ;  ~q  ) 
+	If ( Left ( ~q ; 1 ) = "?" ; "?" ; ~q ) 
 );
 
 //------------------------
@@ -47,7 +47,7 @@ Let (
 Let (
 	 ~q = JSONGetElement ( ~data_api_response ; "messages[0].message" );
 
-	If ( Left ( ~q ; 1 ) = "?" ; "?" ;  ~q  ) 
+	If ( Left ( ~q ; 1 ) = "?" ; "?" ; ~q ) 
 );
 
 //------------------------
@@ -57,7 +57,7 @@ Let (
 Let (
 	 ~q = JSONGetElement ( ~data_api_response ; "response.dataInfo.foundCount" );
 
-	If ( Left ( ~q ; 1 ) = "?" ; "?" ;  ~q  ) 
+	If ( Left ( ~q ; 1 ) = "?" ; "?" ; ~q ) 
 );
 
 //------------------------
@@ -67,7 +67,7 @@ Let (
 Let (
 	 ~q = JSONGetElement ( ~data_api_response ; "response.data" );
 
-	If ( Left ( ~q ; 1 ) = "?" ; "?" ;  ~q  ) 
+	If ( Left ( ~q ; 1 ) = "?" ; "?" ; ~q ) 
 );
 
 
@@ -78,7 +78,7 @@ Let (
 Let (
 	 ~q = JSONGetElement ( ~data_api_response ; "response.data.[" & ~index & "].fieldData" );
 
-	If ( Left ( ~q ; 1 ) = "?" ; "?" ;  ~q  ) 
+	If ( Left ( ~q ; 1 ) = "?" ; "?" ; ~q ) 
 );
 
 //------------------------
@@ -88,7 +88,7 @@ Let (
 Let (
 	 ~q = JSONListKeys( ~data_api_response ; "response.data.[" & ~index & "].portalData" );
 
-	If ( Left ( ~q ; 1 ) = "?" ; "?" ;  ~q  ) 
+	If ( Left ( ~q ; 1 ) = "?" ; "?" ; ~q ) 
 );
 
 //------------------------
@@ -99,7 +99,7 @@ Case ( IsEmpty ( ~key ) ; "" ;
 Let (
 	 ~q =  JSONGetElement ( ~data_api_response ; "response.data.[" & ~index & "].portalData." & ~key );
 
-	If ( Left ( ~q ; 1 ) = "?" ; "?" ;  ~q  ) 
+	If ( Left ( ~q ; 1 ) = "?" ; "?" ; ~q ) 
 )
 );
 
@@ -109,10 +109,10 @@ Let (
  
 Case ( IsEmpty ( ~key ) ; "" ;
 Let ([
-	 ~q =  JSONGetElement ( ~data_api_response ; "response.data.[" & ~index & "].portalData." & ~key ) ;
-        ~q2 = JSONListValues (  ~q ; "" )
+	~q =  JSONGetElement ( ~data_api_response ; "response.data.[" & ~index & "].portalData." & ~key ) ;
+	~q2 = JSONListValues (  ~q ; "" )
 	];
-	If ( Left ( ~q ; 1 ) = "?" or  Left ( ~q2 ; 1 ) = "?" ; "" ;   ValueCount (  ~q2  ) )  
+	If ( Left ( ~q ; 1 ) = "?" or  Left ( ~q2 ; 1 ) = "?" ; "" ; ValueCount ( ~q2 ) )  
 )
 );
 
@@ -123,9 +123,8 @@ Let ([
 Let (
 	 ~q =   JSONGetElement ( ~data_api_response ; "response.fieldMetaData" );
 
-	If ( Left ( ~q ; 1 ) = "?" ; "?" ;  ~q  ) 
+	If ( Left ( ~q ; 1 ) = "?" ; "?" ; ~q ) 
 );
-
 
 //------------------------
 
