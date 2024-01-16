@@ -1,0 +1,8 @@
+
+FMdataAPI.Ω ( "FieldData" ; ~data_api_response ; ~index ; "" )
+
+/*
+FileMaker Custom Function: FMDataAPI.getFieldData ( ~data_api_response )
+
+Returns field data from field by index
+*/
