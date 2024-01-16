@@ -1,0 +1,8 @@
+
+FMdataAPI.Ω ( "FieldMetaData" ; ~data_api_response ; "" ; "" )
+
+/*
+FileMaker Custom Function: FMDataAPI.getFieldMetaData ( ~data_api_response )
+
+Return response.fieldMetaData from FM DATA API response
+*/
