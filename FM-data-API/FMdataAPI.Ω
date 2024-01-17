@@ -5,7 +5,7 @@ FMdataAPI.Ω ( ~query ; ~data_api_response ; ~index ; ~key )
 
 Primary function to return results from the FileMaker DATA API response object.
 
-FMdataAPI<function name>() functions call this function.
+FMdataAPI.<function name>() functions call this function.
 
 Parameters:
 ~query (req)
