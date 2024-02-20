@@ -1,0 +1,31 @@
+If (
+	isOpen ;
+
+	JSONSetElement ( "" ;
+		[ "START" ; Let ( $_script_log_parameter_start = Get ( CurrentTimeUTCMilliseconds ) ; $_script_log_parameter_start ) ; JSONNumber ] ;
+		[ "UUID" ; Let ( $_script_log_parameter_uuid = Get ( UUID ) ; $_script_log_parameter_uuid ) ; JSONString ] ;
+		[ "SCRIPT" ; Get ( ScriptName ) ; JSONString ] ;
+		[ "PARAMETER" ; Get ( ScriptParameter ) ; JSONString ] ;
+		[ "APPLICATION_VERSION" ; Get ( ApplicationVersion ) ; JSONString ]
+	) ;
+
+	JSONSetElement ( "" ;
+		[ "UUID" ; $_script_log_parameter_uuid ; JSONString] ;
+		[ "ERROR" ; $_error ; JSONNumber ] ;
+		[ "LOG" ; $_log ; JSONString ] ;
+		[ "START" ; $_script_log_parameter_start ; JSONNumber ] ;
+		[ "STOP" ; Get ( CurrentTimeUTCMilliseconds ) ; JSONNumber ]
+	)
+
+) //end If
+
+
+/* __________________________________________________
+
+NAME:		ScriptLogParameter ( isOpen )
+PURPOSE:		Encodes the parameters to pass to the script log script.
+PARAMETERS:	isOpen	Boolean. If True, create a SCRIPT_LOG record and beginning timing; if False, stop timing on that SCRIPT_LOG record.
+NOTES:		- Sets a local variable, $_script_log_parameter_uuid, under assumption that it will be scoped only for the script that invokes this function. If this function were to be called by a layout object or data viewer while the script is running, it will interfere with the scope.
+			- Respects local variables $_error and $_log.
+HISTORY:		2018-12-26 09:19 PST - Will M. Baker. Created, inspired by function from Steve Senft-Herrera and Vincenzo Menanno.
+*/
