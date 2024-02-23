@@ -1,5 +1,5 @@
 /*
-Custom Function: lastErrorDetalArray()
+FM Custom Function: lastErrorDetalArray()
 Parameters: none
 ========================
 Returns a JSON Array from this list:
