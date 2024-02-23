@@ -1,0 +1,18 @@
+/*
+FM Custom Function: lastErrorDetalList()
+Parameters: none
+========================
+Returnst a list:
+
+Get(LastError)
+Get(LastErrorLocation)
+Get(LastErrorDetail) 
+
+Notes: this custon function will set a local var $_last_error
+
+Dependencies: none
+
+Benedick Miller
+*/
+
+Let ( $_last_error = Get(LastError) ; If ( $_last_error ; List ( $_last_error ; Get(LastErrorLocation) ; Get(LastErrorDetail) ) ; "" ) )
