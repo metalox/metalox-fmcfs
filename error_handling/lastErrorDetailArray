@@ -1,0 +1,45 @@
+/*
+Custom Function: lastErrorDetalArray()
+Parameters: none
+========================
+Returns a JSON Array from this list:
+
+Get(LastError)
+Get(LastErrorLocation)
+Get(LastErrorDetail) 
+
+Notes: this custom function will set a local var $_last_error
+
+Dependencies: none
+
+Benedick Miller
+*/
+
+Let ( [
+	$_last_error = Get(LastError) ; 
+	~list = If ( $_last_error ; List ( $_last_error ; Get(LastErrorLocation) ; Get(LastErrorDetail) ) ;  "" )
+];
+
+	While ( 
+		[
+       		~l= ~list ;
+		~c = ValueCount ( ~l ) ;
+		~a = "[]" ;
+		~i = 1
+		];
+	
+		~i ≤ ~c ;
+		 
+		[
+
+		~v = GetValue ( ~l ; ~i ) ;
+		~a = ( JSONSetElement ( ~a ; ~i-1 ; ~v ; Case ( IsEmpty (~v) ; JSONString ; Exact ( GetAsNumber (~v) ; ~v ) ; JSONNumber ;  Left ( JSONFormatElements(~v) ; 1 ) <> "?" ; Case ( Left (~v ; 1 ) = "[" ; JSONArray ; JSONObject ) ; JSONString) ));
+		~i = ~i + 1
+
+		];
+	 
+		~a 
+
+	)
+
+)
