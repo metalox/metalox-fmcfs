@@ -1,5 +1,5 @@
 /*
-Custom Function: jsonArrayToText()
+Custom Function: jsonArrayToString()
 Parameters: ~array, ~separator
 ========================
 Converts a JSON Array to text with the specified separator
