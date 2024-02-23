@@ -1,0 +1,25 @@
+/*
+Custom Function: jsonArrayToText()
+Parameters: ~array, ~separator
+========================
+Converts a JSON Array to text with the specified separator
+
+Notes:
+
+Dependencies: none
+
+Benedick Miller
+*/
+
+Let ([
+
+  ~list = JSONListValues ( ~array ; "" ) 
+
+];
+
+  Case (
+    ValueCount ( ~list ) ;
+    Substitute ( ~list ; ¶ ; ~separator ) ;
+    ""
+  )
+)
