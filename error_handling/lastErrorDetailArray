@@ -8,7 +8,7 @@ Get(LastError)
 Get(LastErrorLocation)
 Get(LastErrorDetail) 
 
-Notes: this custom function will set a local var $_last_error
+Notes: this custom function will set Get(LastError) to a local var $_last_error
 
 Dependencies: none
 
