@@ -1,4 +1,4 @@
-/*
+@benlight.net/*
 FM Custom Function: lastErrorDetalArray()
 Parameters: none
 ========================
@@ -12,7 +12,7 @@ Notes: this custom function will set Get(LastError) to a local var $_last_error
 
 Dependencies: none
 
-Benedick Miller
+Benedick Miller ben@benlight.net
 */
 
 Let ( [
