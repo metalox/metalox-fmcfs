@@ -1,6 +1,6 @@
 /*
 Custom Function: jsonValuesToString()
-Parameters: ~array, ~separator
+Parameters: ~json, ~separator
 ========================
 Converts JSON Values to text with the specified separator
 Useful to convert a simple JSON array to text
