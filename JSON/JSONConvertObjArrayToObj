@@ -8,7 +8,7 @@ Notes:	If the ~value parameter is empty, the object itself becomes the value.
 
 Dependencies: none
 
-[Very useful function for JSON, I don't know who wrote it, but thank you!
+[Very useful function for JSON, I don't know who wrote it, but thank you!]
 */
 
 While ( [
