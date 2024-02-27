@@ -4,9 +4,12 @@ Parameters: ~arrayOfObjects, ~pathToKey, ~pathToValue
 ========================
 Converts a JSON Array of Objects to an Object with key:value pairs
 
-Notes:	If the ~value parameter is empty, the object itself becomes the value.
+Notes:		If the ~pathToValue parameter is empty, the object itself becomes the value.
 
-Dependencies: none
+Warning: 	Arrays can contain duplicate values, but objects keys cannot! 
+		Only the last value of a duplicate will be returned as a key!
+
+Dependencies: 	none
 
 [Very useful function for JSON, I don't know who wrote it, but thank you!]
 */
