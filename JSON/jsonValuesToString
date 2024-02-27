@@ -14,7 +14,7 @@ Benedick Miller
 
 Let ([
 
-  ~list = JSONListValues ( ~array ; "" ) 
+  ~list = JSONListValues ( ~json ; "" ) 
 
 ];
 
