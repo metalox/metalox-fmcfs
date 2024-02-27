@@ -1,0 +1,45 @@
+/*
+FM Custom Function: GetListofValues()
+Parameters: ~field, ~start, ~length
+========================
+
+
+Notes:
+
+Dependencies: None
+
+*/
+
+SetRecursion ( While ( [
+
+	/* Get the current field name from either a reference or a string */
+	~error	= EvaluationError ( GetFieldName ( ~field ) ) ;
+	~field	= If ( ~error ; GetField ( ~field ) ; ~field ) ;
+
+	~start	= Max ( Filter ( ~start ; "0123456789" ) ; 1 ) + 0 ;
+	~length	= Filter ( ~length ; "0123456789" ) + 0 ;
+	~result	= "" ;
+	~result_i	= 0
+
+] ;	~result_i < ~length and IsValid ( GetNthRecord ( ~field ; ~start ) ) ; [
+
+	~value	= GetNthRecord ( ~field ; ~start ) ;
+	~result	= List ( ~result ; ~value ) ;
+	~result_i	= ~result_i + 1 ;
+	~start	= ~start + 1
+
+] ;
+
+	/* Clean List, removing unecessary newlines */
+	While ( [
+			~L		= ~result ;
+			~done	= False
+		] ;	not ~done ; [
+			~cleanL	= Substitute ( ~L ; "¶¶" ; "¶" ) ;
+			~cleanL	= If ( Left ( ~cleanL ; 1 ) = "¶" ; Right ( ~cleanL ; Length ( ~cleanL ) - 1 ) ; ~cleanL ) ;
+			~cleanL	= If ( Right ( ~cleanL ; 1 ) = "¶" ; Left ( ~cleanL ; Length ( ~cleanL ) - 1 ) ; ~cleanL ) ;
+			~done	= ~L = ~cleanL ;
+			~L		= ~cleanL
+		] ;	~L )
+
+) ; ~length + 1 )
