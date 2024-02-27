@@ -1,0 +1,23 @@
+/*	Purpose:	Converts a JSON Array of Objects to an Object with key:value pairs
+	Notes:	If the ~value parameter is empty, the object itself becomes the value.
+*/
+
+While ( [
+
+	~array	= JSONSetElement ( "" ; "" ; ~arrayOfObjects ; 4 ) ;
+	~objts	= JSONListValues ( ~array ; "" ) ;
+	~i_max	= If ( IsEmpty ( ~pathToKey ) ; 0 ; ValueCount ( ~objts ) ) ;
+	~i		= 0 ;
+	~res		= "{}"
+
+] ;	~i < ~i_max ; [
+
+	~i		= ~i + 1 ;
+	~obj		= JSONSetElement ( "" ; "" ; GetValue ( ~objts ; ~i ) ; 3 ) ;
+	~key		= JSONGetElement ( ~obj ; ~pathToKey ) ;
+	~val		= JSONGetElement ( ~obj ; ~pathToValue ) ;
+	~jType	= Left ( JSONGetElementType ( ~obj ; ~pathToValue ) ; 1 ) ;
+	~jType	= If ( ~jType ≠ "?" ; ~jType ; 1 ) ;
+	~res		= JSONSetElement ( ~res ; "['" & ~key & "']" ; ~val ; ~jType )
+
+] ;	~res )
