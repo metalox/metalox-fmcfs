@@ -1,5 +1,14 @@
-/*	Purpose:	Converts a JSON Array of Objects to an Object with key:value pairs
-	Notes:	If the ~value parameter is empty, the object itself becomes the value.
+/*	
+FM Custom Function: JSONConvertObjArrayToObj()
+Parameters: ~arrayOfObjects, ~pathToKey, ~pathToValue
+========================
+Converts a JSON Array of Objects to an Object with key:value pairs
+
+Notes:	If the ~value parameter is empty, the object itself becomes the value.
+
+Dependencies: none
+
+[Very useful function for JSON, I don't know who wrote it, but thank you!
 */
 
 While ( [
