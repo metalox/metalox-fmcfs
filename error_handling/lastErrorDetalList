@@ -2,13 +2,13 @@
 FM Custom Function: lastErrorDetalList()
 Parameters: none
 ========================
-Returnst a list:
+Returns a list:
 
 Get(LastError)
 Get(LastErrorLocation)
 Get(LastErrorDetail) 
 
-Notes: this custon function will set a local var $_last_error
+Notes: this custom function will set Get(LastError) to a local var $_last_error
 
 Dependencies: none
 
