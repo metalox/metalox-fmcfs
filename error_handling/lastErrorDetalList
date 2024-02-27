@@ -12,7 +12,7 @@ Notes: this custom function will set Get(LastError) to a local var $_last_error
 
 Dependencies: none
 
-Benedick Miller
+Benedick Miller ben@benlight.net
 */
 
 Let ( $_last_error = Get(LastError) ; If ( $_last_error ; List ( $_last_error ; Get(LastErrorLocation) ; Get(LastErrorDetail) ) ; "" ) )
