@@ -1,7 +1,9 @@
 /*
-FM Custom Function: GetListofValues()
+FM Custom Function: GetListofValues
 Parameters: ~field, ~start, ~length
 ========================
+Creates a list of values from a field from specifed number of records in the found set.
+See also: GetArrayOfValues
 
 
 Notes:
