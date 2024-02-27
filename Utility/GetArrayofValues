@@ -1,0 +1,38 @@
+/*
+FM Custom Function: GetArrayofValues()
+Parameters: ~field, ~start, ~length, ~json_type
+========================
+creates an array of values from a field from specifed number of records in the found set
+See also: GetListOfValues()
+
+Notes:
+
+Dependencies: none
+
+[ I don't know who wrote it, but thank you!]
+*/
+
+
+SetRecursion ( While ( [
+
+	/* Get the current field name from either a reference or a string */
+	~error	= EvaluationError ( GetFieldName ( ~field ) ) ;
+	~field	= If ( ~error ; GetField ( ~field ) ; ~field ) ;
+
+	~start	= Max ( Filter ( ~start ; "0123456789" ) ; 1 ) + 0 ;
+	~length	= Filter ( ~length ; "0123456789" ) + 0 ;
+	~result	= "[]" ;
+	~result_i	= 0
+
+] ;	~result_i < ~length and IsValid ( GetNthRecord ( ~field ; ~start ) ) ; [
+
+	~value	= GetNthRecord ( ~field ; ~start ) ;
+	~result	= JSONSetElement ( ~result ; ~result_i ; ~value ; ~json_type ) ;
+	~result_i	= ~result_i + 1 ;
+	~start	= ~start + 1
+
+] ;
+
+	~result
+
+) ; ~length + 1 )
