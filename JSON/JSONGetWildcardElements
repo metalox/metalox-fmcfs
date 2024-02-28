@@ -5,8 +5,10 @@ Parameters: ~json, ~path
 
 	Purpose:	Exact same as JSONGetElement, except allows for a wildcard (*) substitution of key names or indexes in an array.
 			Returns recursively-found results across the breadth of your JSON.
+
 	History:	Created Feb-2-2023 | Brendan Pierce.
-	Notes:	Unlike JSONGetElement, this function will not return '?' on errors.
+
+	Notes:		Unlike JSONGetElement, this function will not return '?' on errors.
 			Supports "['abc']" style parameters… "['*']" will be considered an actual key called '*' and not wildcard.
 			Empty values are not returned, so count of results may not necessarily be equal to the number of actual items.
 			For invalid json, results will be empty.
