@@ -1,0 +1,105 @@
+/*
+	Purpose:	Exact same as JSONGetElement, except allows for a wildcard (*) substitution of key names or indexes in an array.
+			Returns recursively-found results across the breadth of your JSON.
+	History:	Created Feb-2-2023 | Brendan Pierce.
+	Notes:	Unlike JSONGetElement, this function will not return '?' on errors.
+			Supports "['abc']" style parameters… "['*']" will be considered an actual key called '*' and not wildcard.
+			Empty values are not returned, so count of results may not necessarily be equal to the number of actual items.
+			For invalid json, results will be empty.
+			For invalid json + empty path, an empty (but valid) json object will be returned -> {}.
+			For invalid paths, results are undefined (eg: "[0].a…[-1]]]].bb['a@b.com']q***" ).
+*/
+
+While ( [
+
+	/* Format as proper json */
+	~json_obj		= JSONSetElement ( "" ; "" ; ~json ; 3 ) ;
+	~json_array	= JSONSetElement ( "" ; "" ; ~json ; 4 ) ;
+	~json_type	= Case (
+					~json_obj ≠ "{}"
+						; JSONObject ;
+					~json_array ≠ "[]"
+						; JSONArray ;
+					JSONObject ) ;
+	~json_clean	= If ( ~json_type = JSONObject ; ~json_obj ; ~json_array ) ;
+	~json_obj		= "" ;
+	~json_array	= "" ;
+
+	/*
+		Clean the ~path parameter into list of path elements
+		Basically, the below loop is needed to process out the raw ['abc']-style elements.
+	*/
+	~path = While ( [
+
+			~path	= ~path ;
+			~path_list = "" ;
+			~pos_raw_open_bracket	= Position ( ~path ; "['" ; 1 ; 1 ) ;
+			~pos_raw_close_bracket	= Position ( ~path ; "']" ; ~pos_raw_open_bracket ; 1 )
+
+		] ; ~pos_raw_open_bracket and ( ~pos_raw_open_bracket < ~pos_raw_close_bracket ) ; [
+
+			~text	= Middle ( ~path
+						; ~pos_raw_open_bracket
+						; ( ~pos_raw_close_bracket - ~pos_raw_open_bracket ) + 2 ) ;
+			~left		= Left ( ~path ; ~pos_raw_open_bracket - 1 ) ;
+			~left_list	= Substitute ( ~left ; [ "["   ; "."  ] ; [ "]"   ; "."  ] ; [ "…" ; "." ] ; [ ".."  ; "."  ] ; [ "."   ; "¶" ] ) ;
+			~path	= Right ( ~path
+						; Length ( ~path ) - ( ~pos_raw_close_bracket + 1 ) ) ;
+			~path_list	= List ( ~path_list ; ~left_list ; ~text ) ;
+			~pos_raw_open_bracket	= Position ( ~path ; "['" ; 1 ; 1 ) ;
+			~pos_raw_close_bracket	= Position ( ~path ; "']" ; ~pos_raw_open_bracket ; 1 )
+
+		] ; List ( ~path_list ; Substitute ( ~path ; [ "[" ; "." ] ; [ "]" ; "." ] ; [ "…" ; "." ] ; [ ".." ; "." ] ; [ "." ; "¶" ] ) ) ) ;
+
+	/* Clear newlines */
+	~path		= Substitute ( ~path ; [ "¶¶¶¶" ; "¶" ] ; [ "¶¶¶" ; "¶" ] ; [ "¶¶" ; "¶" ] ) ;
+	~path		= If ( Left ( ~path ; 1 ) = "¶"
+					; Right ( ~path ; Length ( ~path ) - 1 )
+					; ~path ) ;
+	~path		= If ( Right ( ~path ; 1 ) = "¶"
+					; Left ( ~path ; Length ( ~path ) - 1 )
+					; ~path ) ;
+
+	/* For wildcard (*), use all keys instead of just one */
+	~key			= GetValue ( ~path ; 1 ) ;
+	~path		= Middle ( ~path ; Length ( ~key ) + 2 ; 999999999 ) ;
+	~path_end	= IsEmpty ( ~path ) ;
+	~key_list		= Case (
+					~key = "*" and ~json_type = JSONArray
+						; JSONListKeys ( ~json_clean ; "" ) ;
+					~key = "*" and ~json_type = JSONObject
+						; "['" & Substitute ( JSONListKeys ( ~json_clean ; "" ) ; "¶" ; "']¶['" ) & "']" ;
+					~key ) ;
+	~key_list		= If ( ~key_list = "['']" ; "" ; ~key_list ) ;
+
+	/*  Handle result when no ~path was provided */
+	~result		= If ( IsEmpty ( ~key )
+					; JSONGetElement ( ~json_clean ; "" ) ) ;
+
+	/* Iterate over 600 items at a time for recursive/performance reasons */
+	~n_optimize	= 600 ;
+	~i			= 0 ;
+	~i_max		= ValueCount ( ~key_list ) + 0
+
+] ; ~i < ~i_max ; [
+	
+	~result = List ( ~result
+			; While ( [
+				~key_list = MiddleValues ( ~key_list ; 1 ; ~n_optimize ) ;
+				~i = ~i ;
+				~j = 0 ;
+				~result = ""
+			] ;	~i < ~i_max and ~j < ~n_optimize ; [
+				~i		= ~i + 1 ;
+				~j		= ~j + 1 ;
+				~key		= GetValue ( ~key_list ; ~j ) ;
+				~value	= JSONGetElement ( ~json_clean ; ~key ) ;
+				~result	= List ( ~result
+							; If ( ~path_end
+								; ~value
+								; JSON.GetWildcardElements ( ~value ; ~path ) ) )
+			] ;  ~result ) ) ;
+	~i = ~i + ~n_optimize ;
+	~key_list = MiddleValues ( ~key_list ; ~n_optimize + 1 ; 999999999 )
+
+] ; ~result )
