@@ -1,0 +1,31 @@
+/*==========================================================================================
+
+Function:		SqField ( field )
+
+Purpose:		Returns name of field for use in SQL statements. Accepts field reference or name of field.
+
+Created:		11/4/2011 - Donovan Chandler
+
+Modified:		11/28/2011 - Donovan Chandler: Added support for field name if reference fails; also returns field name if no table is provided.
+
+Modified:		12/10/2012 - Will M. Baker: Uses error-free logic to test for field name or field referenced; quotes table name.
+
+Modified:		2/18/2013 - Donovan Chandler: Returns just field name if table is missing.
+
+Modified:		5/16/2013 - Will M. Baker: Repetitions are properly formatted (outside of quoted text).
+
+==========================================================================================*/
+
+
+Let ( [
+	error = EvaluationError ( GetFieldName ( field ) ) ;
+	fieldName = If ( error ; field ; GetFieldName ( field ) ) ;
+	fieldList = Substitute ( fieldName ; "::" ; ¶ ) ;
+	fieldListCnt = ValueCount ( fieldList ) ;
+	rawField = GetValue ( fieldList ; fieldListCnt ) ;
+	table = If ( fieldListCnt > 1 ; GetValue ( fieldList ; 1 ) ) ;
+	bracketPosition = Position ( rawField ; "[" ; Length ( rawField ) ; -1 ) ;
+	field = If ( not bracketPosition ; rawField ; Left ( rawField ; bracketPosition - 1 ) ) ;
+	repetition = If ( bracketPosition ; Right ( rawField ; Length ( rawField ) - bracketPosition + 1 )  )
+	];
+	If ( not IsEmpty ( table ) ; Lower ( Quote ( table ) ) & "." ) & Lower ( Quote ( field ) ) & repetition
