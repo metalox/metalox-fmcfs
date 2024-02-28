@@ -1,4 +1,8 @@
 /*
+FM Custom Function: JSONGetWildcardElements()
+Parameters: ~json, ~path
+========================
+
 	Purpose:	Exact same as JSONGetElement, except allows for a wildcard (*) substitution of key names or indexes in an array.
 			Returns recursively-found results across the breadth of your JSON.
 	History:	Created Feb-2-2023 | Brendan Pierce.
