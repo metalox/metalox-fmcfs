@@ -1,0 +1,20 @@
+/*==========================================================================================
+
+Function:		SqTable ( field )
+
+Purpose:		Returns name of field's basetable for use in SQL statements.
+
+Created:		11/4/2011 - Donovan Chandler
+
+Modified:		
+
+==========================================================================================*/
+
+
+Let ( [
+	error = EvaluationError ( GetFieldName ( field ) ) ;
+	fieldName = If ( error ; field ; GetFieldName ( field ) ) ;
+	table = Left ( fieldName ; Position ( fieldName ; "::" ; 1 ; 1 ) - 1 )
+	] ;
+	Lower ( Quote ( table ) )
+)
