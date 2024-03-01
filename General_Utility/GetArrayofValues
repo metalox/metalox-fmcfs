@@ -5,6 +5,16 @@ Parameters: ~field, ~start, ~length, ~json_type
 creates an array of values from a field from specifed number of records in the found set
 See also: GetListOfValues()
 
+~json_type must be a number
+
+1 = JSONString
+2 = JSONNumber
+3 = JSONObject
+4 = JSONArray
+5 = JSONBoolean
+6  = JSONNull
+0 = JSONRaw
+
 Notes:
 
 Dependencies: none
