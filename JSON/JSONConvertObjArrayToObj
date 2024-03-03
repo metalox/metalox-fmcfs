@@ -11,7 +11,7 @@ Warning: 	Arrays can contain duplicate values, but objects keys cannot!
 
 Dependencies: 	none
 
-[Very useful function for JSON, I don't know who wrote it, but thank you!]
+Created by Brendan Pierce.
 */
 
 While ( [
