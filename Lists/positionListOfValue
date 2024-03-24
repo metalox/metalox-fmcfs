@@ -1,6 +1,4 @@
 /*
-DEPECIATED! Use positionOfValue instead.
-========================
 Custom Function: positionListOfValue
 Parameters: ~text, ~searchValue
 ========================
