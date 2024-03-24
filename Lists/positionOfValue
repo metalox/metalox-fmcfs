@@ -2,7 +2,7 @@
 Custom Function: positionOfValue
 Parameters: ~text, ~searchValue, ~start , ~occurance
 ========================
-Works like FileMaker native Position() for return delimirted lists.
+Works like FileMaker native Position() for return delimited lists.
 
 Returns the value number (position) of the search value in the return delimirted list.
 REQUIRES FileMaker 18 + with While() Function
