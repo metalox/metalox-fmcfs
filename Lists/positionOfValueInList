@@ -1,5 +1,6 @@
 /*
-Custom Function: positionListOfValue
+Custom Function: positionOfValueInList 
+(old name: positionListOfValue)
 Parameters: ~text, ~searchValue
 ========================
 
