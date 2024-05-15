@@ -1,0 +1,26 @@
+/*
+FM Custom Function
+DistanceToTarget ( targetLat ; targetLng ; startLat ; startLng )
+
+Returns distance between two sets of gps coordinates in metres.
+
+Sample input:
+DistanceToTarget ( 41.40338 ; 2.17403 ; 40.748440 ; -73.984559 )
+
+Sample output:
+6161803.086571954891149
+
+Created by Jonni
+*/
+
+Let ( [
+	
+	~lat = targetLat ;
+	~lng = targetLng ;
+	~glat = startLat ;
+	~glng = startLng
+] ;
+
+	Acos ( Sin(~lat*Pi/180) * Sin(~glat*Pi/180) + Cos(~lat*Pi/180) * Cos(~glat*Pi/180) * Cos(~glng*Pi/180-~lng*Pi/180) ) * 6371000
+
+)
