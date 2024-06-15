@@ -15,10 +15,10 @@ Copied from DistanceToTarget  by Jonni https://www.briandunning.com/cf/2658
 
 Let ( [
 
-	~olat = GetAsNumber( startLat ) ;
-	~olong = GetAsNumber( startLong );
-	~tlat = GetAsNumber( targetLat ) ;
-	~tlong =GetAsNumber( targetLong ) ;
+	~oLat = GetAsNumber( startLat ) ;
+	~oLong = GetAsNumber( startLong );
+	~tLat = GetAsNumber( targetLat ) ;
+	~tLong =GetAsNumber( targetLong ) ;
 	~unit = If ( IsEmpty ( distanceUnit ) ; "mile" ; distanceUnit );
 	~multiplier = Case ( 
 		~unit = "m" or Left ( ~unit ; 3 ) = "met" ; 6371000 ;
@@ -31,11 +31,11 @@ Let ( [
 
 	Case (
 
-		IsEmpty ( ~olat ) or IsEmpty ( ~olong ) or IsEmpty ( ~tlat ) or IsEmpty ( ~tlong ) or IsEmpty ( ~unit ) ; "" ;
+		IsEmpty ( ~oLat ) or IsEmpty ( ~oLong ) or IsEmpty ( ~tLat ) or IsEmpty ( ~tLong ) or IsEmpty ( ~unit ) ; "" ;
 
-		~olat ="?" or ~olong = "?" or ~tlat = "?" or ~tlong = "?" ; "" ;
+		~oLat ="?" or ~oLong = "?" or ~tLat = "?" or ~tLong = "?" ; "" ;
 
-		Acos ( Sin( ~tlat * Pi/180 ) * Sin( ~olat * Pi/180 ) + Cos( ~tlat * Pi/180 ) * Cos( ~olat * Pi/180 ) * Cos( ~olong * Pi/180 - ~tlong * Pi/180 ) ) * ~multiplier
+		Acos ( Sin( ~tLat * Pi/180 ) * Sin( ~oLat * Pi/180 ) + Cos( ~tLat * Pi/180 ) * Cos( ~oLat * Pi/180 ) * Cos( ~oLong * Pi/180 - ~tLong * Pi/180 ) ) * ~multiplier
 
 	)
 )
