@@ -1,0 +1,41 @@
+/*
+FM Custom Function
+gpsDistance( startLat ; startLong ; targetLat ; targetLong ; distanceUnit )
+
+Returns the distance in metres between 2 gps coordinates
+
+distanceUnit must be one of: "mile", "miles", "km", "kms", "metre", "metres", "meter", "meters", "m"
+If empty default to miles.
+
+Updated 2024-06-14 by Ben Miller ben@benlight.net
+Simple error trapping added, added disatnce unit.
+Copied from DistanceToTarget  by Jonni https://www.briandunning.com/cf/2658
+*/
+
+
+Let ( [
+
+	~olat = GetAsNumber( startLat ) ;
+	~olong = GetAsNumber( startLong );
+	~tlat = GetAsNumber( targetLat ) ;
+	~tlong =GetAsNumber( targetLong ) ;
+	~unit = If ( IsEmpty ( distanceUnit ) ; "mile" ; distanceUnit );
+	~multiplier = Case ( 
+		~unit = "m" or Left ( ~unit ; 3 ) = "met" ; 6371000 ;
+		Left ( ~unit ; 2 ) = "km" ;  6371 ;
+		Left ( ~unit ; 4  ) = "mile" ;  3963 ;
+		)
+
+
+] ;
+
+	Case (
+
+		IsEmpty ( ~olat ) or IsEmpty ( ~olong ) or IsEmpty ( ~tlat ) or IsEmpty ( ~tlong ) or IsEmpty ( ~unit ) ; "" ;
+
+		~olat ="?" or ~olong = "?" or ~tlat = "?" or ~tlong = "?" ; "" ;
+
+		Acos ( Sin( ~tlat * Pi/180 ) * Sin( ~olat * Pi/180 ) + Cos( ~tlat * Pi/180 ) * Cos( ~olat * Pi/180 ) * Cos( ~olong * Pi/180 - ~tlong * Pi/180 ) ) * ~multiplier
+
+	)
+)
