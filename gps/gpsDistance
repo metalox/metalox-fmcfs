@@ -2,14 +2,15 @@
 FM Custom Function
 gpsDistance( startLat ; startLong ; targetLat ; targetLong ; distanceUnit )
 
-Returns the distance in metres between 2 gps coordinates
+Returns the distance between 2 gps coordinates
 
 distanceUnit must be one of: "mile", "miles", "km", "kms", "metre", "metres", "meter", "meters", "m"
-If empty default to miles.
+If empty defaults to miles.
 
 Updated 2024-06-14 by Ben Miller ben@benlight.net
 Simple error trapping added, added disatnce unit.
-Copied from DistanceToTarget  by Jonni https://www.briandunning.com/cf/2658
+acknowledgement:
+The formula is copied from DistanceToTarget  by Jonni https://www.briandunning.com/cf/2658
 */
 
 
