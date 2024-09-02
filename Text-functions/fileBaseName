@@ -1,0 +1,17 @@
+/*
+FileMaker Custom Function
+fileBaseName ( ~filename )
+
+Returns the filename base name
+By Ben Miller - ben@benlight.net - Sep 2024
+*/
+
+
+Let ([
+
+	~p = Position ( ~filename ; "." ; Length ( ~filename ) ; -1 );
+	~list = If ( not ~p ;  ~filename ; Replace ( ~filename ; ~p ; 1 ; ¶ ) )
+];
+
+	GetValue ( ~list ; 1 ) 
+)
