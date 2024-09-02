@@ -1,0 +1,47 @@
+/*
+FileMaker Custom Function
+safeFileName ( ~filename ; ~allowSpaces )
+
+Returns text formatted for use as a filename. The file extension will be preseved.
+
+The result will be trucated to a max 250 characters, including file extension
+
+~allowSpaces - boolean
+
+True to preserve single spaces 
+or 
+False to replace spaces with "_"
+
+Examples:
+
+SafeFileName2 (  "my file name.txt" ; True ) - spaces will be preservered
+SafeFileName2 (  "my file name.txt" ; False ) - spaces will be replaced with "_"
+
+Notes: 
+
+Removes line breaks
+Trims all leading and trailing spaces
+Removes punctuation and special characters except _ and -
+"." will be replcaed with "-" except for final "." before extension.
+
+Updated to preseerve file extension - Sept 2024
+Created  by Ben Miller ben@benlight.net - Dec 2017 
+
+*/
+ 
+Let ([
+
+	~p = Position ( ~filename ; "." ; Length ( ~filename ) ; -1 );
+	~list = If ( ~p ; Replace ( ~filename ; ~p ; 1 ; ¶ ) ; ~filename );
+	~base_name = GetValue ( ~list ; 1 );
+	~ext = GetValue ( ~list ; 2 ) ;
+	~ext =  If ( IsEmpty ( ~ext ) ; "" ;  "." & ~ext );
+
+  	~pre = Left ( TrimAll (  Filter ( ~base_name; ".-_ 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" ) ; 1 ; 1 ) ;  250 - Length ( ~ext ) )
+];
+
+	Case (
+		 ~allowSpaces = 1 ;  ~pre & ~ext   ;
+		Substitute (  ~pre ; [ "." ; "-" ] ; [Char(9) ; "_" ] ; [ " " ; "_" ] ) & ~ext
+	 )
+)
