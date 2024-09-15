@@ -1,14 +1,16 @@
 /*
 Custom Function: WindowCenterInWindow 
-Parameters: _TL ; _nHeight ; _nWidth 
+Parameters: ~TL ; ~size
 Dependencies: Custom Functions:  WindowInfoSet & WindowInfoClear
 ========================
-v 1.0.1 2022-12-13 Benedick Miller, ben@benlight.net
-v 2.0.1 2023-04-16 - updates: 
-	parameters _nHeight & _nWidth are optional - id empty get(WindowHeight & get(WindowWidth) are used
+v 3.0.1 2024.09 updates:
+	parameters nHeight & nWidth replaced with single parameter "~size"
+v 2.0.1 2023-04 updates: 
+	parameters _nHeight & _nWidth are optional - if empty get(WindowHeight & get(WindowWidth) are used
+v 1.0.1 2022-12  Benedick Miller, ben@benlight.net
 ------------------------
 
-Returns a Number to positon a New Window, or move a window, for Window Top or Window Left, depending on parameter "T" or "L"
+Returns a number to positon a new window, or move a window, for Window Top or Window Left, depending on parameter "T" or "L"
 
 "T" returns a number for the New Window Top position
 "L" returns a number for the New Window Left position
@@ -29,53 +31,57 @@ $$_windowRight
 Usage:
 ------------------------
 
-Paramters: _TL_ ; _nHeight ; _nWidth
+Paramters: ~TL ; ~size
 
     "T" to return a value for WindowTop 
     "L" to return a value for WindowLeft
 
-    IF "T" is entered _nWidth is ignored (it can be set to 0)
-    IF "L" is entered _nHeight is ignored (it can be set to 0)
-
 ------------------------
 
-Sample usage in Move/Resize Window Dialog:
-
+Sample usage in Move/Resize Window:
 
 Child window height 80px all-round smaller than parent, centered:
 ------------------------
 Height: ( $$_windowHeight - 80 )
 Width: ( $$_windowWidth - 80 )
-Window Top: WindowCenterInWindow ( "T" ; Get(WindowHeight) - 80 ; 0 ) 
-Window Left: WindowCenterInWindow ( "L" ; 0 ; $$_windowWidth - 80 ) 
+Window Top: WindowCenterInWindow ( "T" ; $$_windowHeight - 80  ) 
+Window Left: WindowCenterInWindow ( "L" ; $$_windowWidth - 80 ) 
 
 
 Child window, height & width defined, centered:
 ------------------------
 Height: ( 400 )
 Width: ( 500 )
-Window Top: WindowCenterInWindow ( "T" ; 400 ; 0 ) 
-Window Left: WindowCenterInWindow ( "L" ; 0 ; 500 ) 
+Window Top: WindowCenterInWindow ( "T" ; 400  ) 
+Window Left: WindowCenterInWindow ( "L" ; 500 )
 
-Ben Miller 2020-03 ben@benlight.net
+Child window, usning get(WindowHeight) & Get(WinodWidth), centered:
+------------------------
+Window Top: WindowCenterInWindow ( "T" ; ""  ) 
+Window Left: WindowCenterInWindow ( "L" ; "" ) 
 
 */
 
 Let ([
 
-	_nHeight = Case (IsEmpty (_nHeight) ; Get(WindowHeight) ; _nHeight );
-	_nWidth = Case (IsEmpty (_nWidth) ; Get(WindowWidth) ; _nWidth ) 
+	~size = Case ( 
+		~TL = "T" ; 
+			If (IsEmpty ( ~size ) ; Get(WindowHeight) ; GetAsNumber( ~size )) ;
+		 ~TL = "L" ;  
+			If (IsEmpty ( ~size ) ; Get(WindowWidth) ; GetAsNumber( ~size ))  ; 
+		"" )
+
 ];
 
 		Case( 
                          IsEmpty ( $$_windowHeight ) ; "" ;
 
-			_TL = "T" ; 
-				Case ( _nHeight > Get(ScreenHeight) ; 
+			~TL = "T" ; 
+				Case ( ~size > Get(ScreenHeight) ; 
 				0 ; 
-				( $$_windowTop + ( $$_windowHeight / 2 )) - ( _nheight / 2 )) ;
-		 	   _TL = "L" ;
-				( $$_windowLeft + ( $$_windowWidth / 2 )) - ( _nWidth / 2 )  ;
+				( $$_windowTop + ( $$_windowHeight / 2 )) - ( ~size / 2 )) ;
+		 	   ~TL = "L" ;
+				( $$_windowLeft + ( $$_windowWidth / 2 )) - ( ~size / 2 )  ;
 			"" )
 	
 )
