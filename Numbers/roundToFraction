@@ -1,0 +1,19 @@
+/*
+FileMaker Pro Custom Function
+roundToFraction ( ~number ; ~fraction )
+
+Round number to specifies fraction
+Sample input: ( 10.199 ; 0.25 )
+Sample Output ( 10.25 ) 
+
+Sample input: ( 10.95 ; 0.25 )
+Sample Output ( 11 ) 
+
+Benedick Miller 2024
+ben@benlight.net
+*/
+
+Case (
+~number = 0 or ~fraction = 0 ; "?" ; 
+Round ( ~number / ~fraction ; 0 ) * ~fraction
+)
