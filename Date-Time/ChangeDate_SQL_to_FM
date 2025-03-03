@@ -1,0 +1,44 @@
+/**
+* =====================================
+* #ChangeDate_SQL_to_FM ( Fecha )
+*
+* DEVUELVE:
+*		La fecha recibida en formato FileMaker  ( DD/MM/AAAA )
+*
+* PARAMETROS:
+*		Fecha: Fecha en formato SQL.
+*
+* EJEMPLO:
+*		ChangeDate_SQL_to_FM ( 2019-03-31)
+*		Resultado: 31/03/2019
+*
+*
+* DEPENDENCIA: Ninguna
+*
+* HISTORIA:
+*		CREADO el 17/09/2018 por Jesus Sanchez [ dbFile Desarrollos].
+* =====================================
+*/
+
+
+
+Let ( 
+[
+Fecha = Fecha ;
+Fecha = Substitute ( Fecha ; "-" ; "¶" ) ;
+
+dia = GetValue ( Fecha ; 3 );
+dia = Filter ( dia ; "1234567890" ) ;
+dia = Right ( "0" & dia ; 2 );
+
+mes = GetValue ( Fecha ; 2 );
+mes = Filter ( mes ; "1234567890" ) ;
+mes = Right ( "0" & mes ; 2 ) ;
+
+Anyo = GetValue ( Fecha ; 1 );
+FechaFM = Date ( mes ; dia ; Anyo )
+
+]
+; FechaFM
+
+)
