@@ -1,0 +1,43 @@
+/*
+* =====================================
+* Date_FM_to_ISO8601 ( ~date ; ~no_dash )
+*
+PURPOSE:
+*		convert filemake date to ISO8601 YYYY-MM-DD or YYYYMMDD 
+*
+* PARAMETERS:
+*		~date: filemaker date
+*      ~no_dash: boolean 1 or 0 optional
+
+* EXAMPLE:
+*		Date_FM_to_ISO8601 ( 29/12/2024 ; 1 )
+*		Result: 2024-12-29
+*
+*       Date_FM_to_ISO8601 ( 29/12/2024 ; 0 )
+*		Result: 20241229
+*
+* DEPENDENCIES: None
+*
+* HISTORY:
+*		CREATED Ben Miller 2025-03-06 ben@benlight.net
+* =====================================
+*/
+
+
+
+Let ([
+
+    ~date = GetAsDate ( ~date );
+    ~sep = If ( ~no_dash ; "" ; "-" );
+    ~dd = Right ( "0" & Day ( ~date ) ; 2 );
+    ~mm = Right ( "0" & Month ( ~date ) ; 2 );
+    ~yyyy = Year ( ~date )
+
+    ];
+
+	Case( 
+		Left( ~date ; 1 ) = "?" ; "" ;
+    	~yyyy & ~sep & ~mm & ~sep & ~dd
+	)
+
+)

@@ -1,0 +1,38 @@
+/*
+* =====================================
+* Date_ISO8601_to_FM  ( ~date_iso8601 )
+*
+* PURPOSE
+*		convert  ISO8601 date to Filemaker Date
+
+* PARAMETERS:
+*		~date_iso8601: YYYY-MM-DD or YYYYMMDD
+
+* EXAMPLE:
+*		Date_ISO8601_to_FM ( 2024-12-29 )
+*		Result: 29/12/2024 or 12/29/2024 etc. depending on locale
+*
+*		Date_ISO8601_to_FM ( 20241229 )
+*		Result: 29/12/2024 or 12/29/2024 etc. depending on locale
+*
+* DEPENDENCIES: None
+*
+* HISTORY:
+*		CREATED Ben Miller 2025-03-06 ben@benlight.net
+* =====================================
+*/
+
+
+
+Let ([
+
+    ~date = Filter( ~date_iso8601 ; "0123456789" )
+
+    ];
+
+Case ( 
+    Length( ~date ) = 8 ;
+    Date ( Middle ( ~date ; 5 ; 2 ) ; Middle ( ~date ; 7 ; 2 ) ; Left ( ~date ; 4 ) ) ; 
+    "" 
+    )
+)
