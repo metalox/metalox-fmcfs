@@ -1,0 +1,121 @@
+Let ( [
+~portalName = portalName ;
+~placeholder = placeholder ;
+~fontSize = fontSize ;
+~html =
+"data:text/html,
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, shrink-to-fit=no'>
+    <title>Search Field</title>
+    <script>
+     {{onFMReady}}
+    </script>
+    <style>
+
+      :root {
+        --background: white;
+        --foreground: black;
+        --focus: red;
+        --font-size: {{fontSize}}px;
+        font-size: var(--font-size);
+      }
+
+      input {
+        color-scheme: dark;
+        font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 
+  Helvetica, Arial, 'Lucida Grande', sans-serif;
+      }
+
+      html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: var(--background);
+        font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 
+  Helvetica, Arial, 'Lucida Grande', sans-serif;
+      }
+
+      body {
+        background-color: var(--background);
+        color: var(--foreground);
+        overflow: hidden;
+      }
+
+      input {
+        font-size: var(--font-size);
+        outline: none;
+        font-weight: normal;
+        max-width: 100%;
+        width: calc(100%);
+        padding: 10px 8px 10px 8px;
+        word-wrap: break-word;
+        background-color: var(--background);
+        color: var(--foreground);
+        /* border-radius: calc(1rem / 5); */
+        box-sizing: border-box;
+        border: 1px solid #4D4D4D;
+      }
+
+      input:focus {
+        background-color: white;
+        outline: 1px solid var(--focus);
+        outline-offset: -1px;
+        box-shadow: 0 0 2px 0px var(--focus);
+      }
+
+    </style>
+    <script>
+
+      function keyHandler(e) {
+        if (e && e.key == 'Enter') 
+		document.getElementById('search').select();
+        filter();
+      }
+
+      function filter() {
+        var portalName = '{{portalName}}';
+        var params = {};
+        params[portalName] = document.getElementById('search').value;
+        var encodedParams = JSON.stringify(params);
+        var scriptName = !portalName ? 'quickfind' : 'filter portal';
+        OnFMReady.run(scriptName, encodedParams);
+	
+      }
+
+      function setFilter(filterValue) {
+        document.getElementById('search').value = filterValue; 
+        filter(); 
+      }
+
+    </script>
+  </head>
+  <body onload='keyHandler(event)' >
+    <input 
+      type='text' 
+      onkeyup='keyHandler(event)' 
+      placeholder='{{placeholder}}' 
+      id='search' 
+      autocapitalize='off' 
+      autocomplete='off' 
+      autocorrect='off' 
+      spellcheck='false'>
+    </input>
+  </body>
+</html>
+" ;
+
+~html_final = Substitute ( ~html 
+		;[ "{{fontSize}}" ; ~fontSize ] 
+		;[ "{{portalName}}" ; ~portalName ]
+		;[ "{{placeholder}}" ; ~placeholder ]
+		;[ "{{onFMReady}}" ; onFMReady ]
+) 
+];
+
+~html_final 
+
+)
