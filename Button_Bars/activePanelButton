@@ -1,0 +1,23 @@
+/**--------------------------------------------------------------------------
+activePanelButton ( buttonBarName; buttonText; panelText )
+Used in button bar calculations to highlight a button related to the active panel.
+Version 1.0	2019-12-13
+---------------------------------------------------------------------------*/
+Let( [
+	button = If( buttonText = ""; "b."; buttonText );
+	panel = If( panelText = ""; "p."; panelText );
+	panels = If( Get( TriggerTargetPanel ) = 0;
+		frontPanels;
+	// Else
+		Substitute( frontPanels;
+			[ GetValue( Get( TriggerCurrentPanel ); 2 ); GetValue( Get( TriggerTargetPanel ); 2 ) ]
+		)
+	)
+];
+	trimMore(
+		FilterValues(
+			GetLayoutObjectAttribute( buttonBarName; "containedObjects" );
+			Substitute( panels; [ panel; button ] )
+		)
+	)
+)
