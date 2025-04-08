@@ -3,10 +3,10 @@
 * searchField ( portalName ; fontSize ; placeholder )
 *
 PURPOSE:
-*  	User webviewer for input, then run a FileMaker Script with the input field content as the script parameter
+*  	Use a webviewer for input, then run a FileMaker Script with the input field content as the script parameter
 *	This CF will create a simple web-page with an input field
-*	When a user pressed [Enter] a filemaker script will be called.
-* 	This version is for portal filtering, but the technique could be applied to other uses 
+*	When a user presses [Enter] a filemaker script will be called and the input contents passed as the script parameter
+* 	(This version is for portal filtering, but the technique could be applied to other uses)
 *
 * PARAMETERS:
 *	portalName
@@ -15,10 +15,9 @@ PURPOSE:
 *
 * EXAMPLE USAGE:
 
-*	Use web-viewer as a search field for portal filtering or perform a quickfind
-* 	Use output result as portal filter
+*	Use web-viewer as a search field for portal filtering
+* 	Use input text for the portal filter
 * 
-*
 *
 * DEPENDENCIES: onFMReady()
 *
