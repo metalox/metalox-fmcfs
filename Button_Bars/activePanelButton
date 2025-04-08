@@ -3,6 +3,7 @@ activePanelButton ( buttonBarName; buttonText; panelText )
 Used in button bar calculations to highlight a button related to the active panel.
 Dependenies: frontPanels()
 Version 1.0	2019-12-13
+Copied from Trispel_App by Ben Miller ben@benlight.net
 ---------------------------------------------------------------------------*/
 Let( [
 	button = If( buttonText = ""; "b."; buttonText );
