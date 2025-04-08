@@ -1,0 +1,26 @@
+/**--------------------------------------------------------------------------
+frontPanels ( )
+Returns a list with the object names of all currently visible panels.
+Dependencies: none
+Version 	1.0	– 2015-01-06
+Created by: ?
+Copied from Trispel_App by Ben Miller ben@benlight.net
+---------------------------------------------------------------------------*/
+Let( [
+	$frontTabs_objectList = If( IsEmpty( $frontTabs_objectList );
+		Substitute(
+			LayoutObjectNames( Get( FileName ); Get( LayoutName ) ) & ¶;
+			["<"; ""]; [">"; ""]; [ ¶; "{}" ]; [ "}{"; "" ]; [ "{}"; ¶ ]
+		);
+	// Else
+		$frontTabs_objectList
+	);
+	_object = GetValue( $frontTabs_objectList; 1 );
+	_enclosingObject = GetLayoutObjectAttribute( _object; "enclosingObject" );
+	$frontTabs_objectList = MiddleValues( $frontTabs_objectList; 2; 1000000 )
+];
+	If( GetLayoutObjectAttribute( _object; "isFrontTabPanel" ) and ( IsEmpty( GetLayoutObjectAttribute( _object; "enclosingObject" ) ) 
+	   or GetLayoutObjectAttribute( _enclosingObject; "IsFrontTabPanel" ) ); 
+		_object & ¶
+	) & If( not IsEmpty( $frontTabs_objectList ); frontPanels )
+)
