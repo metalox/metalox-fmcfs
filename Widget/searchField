@@ -1,3 +1,28 @@
+/*
+———————————————————————
+* searchField ( portalName ; fontSize ; placeholder )
+*
+PURPOSE:
+*	Use web-viewer as a search field for portal filtering
+* 	Use output result as portal filter
+*	The JS script will run a filemaker script and pass parameters to it.
+*
+* PARAMETERS:
+*	portalName
+*	fontSize
+*	placeholder
+*
+* EXAMPLE:
+*
+*
+* DEPENDENCIES: onFMReady()
+*
+* HISTORY:
+*	CREATED by ?
+* 	Found in Trispel_App Ben Miller ben@benlight.net
+* ———————————————————————
+*/
+
 Let ( [
 ~portalName = portalName ;
 ~placeholder = placeholder ;
