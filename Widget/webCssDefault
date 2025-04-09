@@ -1,19 +1,26 @@
 /*
 FileMaker Custom Function: 
-webCssDefault()
+webCssDefault( fontSize )
 
 Default css for the file
 
-Parameters: none
+Parameters:
+	fontSize (optional) - number
+	if not sepcified deafult is set below
 
 Dependencies: none
 
 Created ben Miller 2025-04-09 benedick_m@beezwax.net
 */
 
+Let ([
+
+ ~fontSize = If ( GetAsNumber( fontSize ) + 0 = 0 ; 16 ; GetAsNumber ( fontsize ))
+
+ ];
+
 "body {
 	font-family: \"Helvetica Neue\", sans-serif;
-	font-weight: 300;
 	background-color: #FFFFFF;
 	margin: 0;
 	padding: 0;
@@ -21,12 +28,14 @@ Created ben Miller 2025-04-09 benedick_m@beezwax.net
 
 div {
 	color: #000000;
+	font-weight: 300;
+	font-size: " &  ~fontSize & " ;
 	text-align: left;
 	margin: auto;
 }
 
 html::-webkit-scrollbar {
-	width: 10x;
+	width: 10px;
 }
  
 html::-webkit-scrollbar-track {
@@ -38,3 +47,4 @@ html::-webkit-scrollbar-thumb {
 	background: grey;
 	radius: 8px;
 }"
+)
