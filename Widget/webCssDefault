@@ -15,13 +15,16 @@ Created ben Miller 2025-04-09 benedick_m@beezwax.net
 	font-family: \"Helvetica Neue\", sans-serif;
 	font-weight: 300;
 	background-color: #FFFFFF;
-
+	margin: 0;
+	padding: 0;
 }
+
 div {
 	color: #000000;
 	text-align: left;
-	margins: auto;
+	margin: auto;
 }
+
 html::-webkit-scrollbar {
 	width: 10x;
 }
