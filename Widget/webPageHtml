@@ -1,5 +1,5 @@
 /*
-FileMaker Custom Function: webPageHtml ( content ; css )
+FileMaker Custom Function: webPageHtml( content ; css )
 
 Outputs HTML, which can be displayed in a webviewer.
 Example content: a text field.
@@ -8,7 +8,7 @@ Parameters:
   content (required) - text to display (required)
   css (optional) - css for the page, if empty default css is used
 
-Dependencies: webCssLocal()
+Dependencies: webCssDefault()
 
 Created ben Miller 2025-04-09 benedick_m@beezwax.net
 */
