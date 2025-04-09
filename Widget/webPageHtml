@@ -16,7 +16,7 @@ Created ben Miller 2025-04-09 benedick_m@beezwax.net
 
 Let ([
   ~content = content ;
-  ~css = If ( isEmpty  ( css ) ; WebCssLocal ; "" );
+  ~css = If ( isEmpty  ( css ) ; webCssDefault ; "" );
   ~page =
   List(
   "<html>";
