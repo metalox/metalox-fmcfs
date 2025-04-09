@@ -1,12 +1,13 @@
 /*
 FileMaker Custom Function: 
-webPageHtml( content ; css )
+webPageHtml( content ; fontSize ; css )
 
 Outputs HTML, which can be displayed in a webviewer.
 Example content: a text field.
 
 Parameters:
   content (required) - text to display (required)
+  fontSize (optional) - number, default set in webCssDefault()
   css (optional) - css for the page, if empty default css is used
 
 Dependencies: webCssDefault()
@@ -16,7 +17,7 @@ Created ben Miller 2025-04-09 benedick_m@beezwax.net
 
 Let ([
   ~content = content ;
-  ~css = If ( isEmpty  ( css ) ; webCssDefault ; "" );
+  ~css = If ( IsEmpty  ( css ) ; webCssDefault( fontSize ) ; css );
   ~page =
   List(
   "<html>";
@@ -37,5 +38,4 @@ Let ([
     ;[ "{{content}}" ; ~content ]
   )
 )
-
 
