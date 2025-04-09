@@ -1,3 +1,15 @@
+/*
+FileMaker Custom Function: webCssDefault()
+
+Default css for the file
+
+Parameters: none
+
+Dependencies: none
+
+Created ben Miller 2025-04-09 benedick_m@beezwax.net
+*/
+
 "body {
 	font-family: \"Helvetica Neue\", sans-serif;
 	font-weight: 300;
