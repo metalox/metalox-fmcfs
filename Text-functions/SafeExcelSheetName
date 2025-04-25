@@ -1,0 +1,28 @@
+/* 
+FileMaker Custom Function: SafeExcelSheetName ( ~text ; ~max_length )
+
+Parameters:
+~text: text
+~max_length:  number
+
+Removes all line breaks.
+Trims all leading and trailing spaces.
+Removes most special characters.
+The result will be trucated to min value of max_length & 31.
+If max_length not specified it defaults to 31.
+
+By Ben Miller - Feb 2025
+*/
+ 
+Let ([
+	~max_length = Int(Abs( GetAsNumber( ~max_length)));
+	~max_length = If ( ~max_length > 0 ; Min ( ~max_length ; 31 ) ; 31 );
+	~cleanText = Substitute ( ~text ; [ Char(13) ; " " ] ; [ Char(10); " " ] ; [ Char(9) ; " " ] );
+	~cleanText = Filter ( ~cleanText ;  " .-_0123456789abcdefghijklmnopqrstuvwxyzäëöü
+ABCDEFGHIJKLMNOPQRSTUVWXYZÄËÖÜ" );
+	~cleanText = TrimAll ( ~cleanText ; 1 ; 1 ) 
+	];
+
+Left (  ~cleanText  ; ~max_length )
+
+)
