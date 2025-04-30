@@ -1,47 +1,48 @@
-/*
-FileMaker Custom Function: 
-webCssDefault( fontSize )
-
-Default css.
-Edit as neeeded for your file
-
-Parameters:
-	fontSize (optional) - number
-	if not sepcified default is set below
-
-Dependencies: none
-
-Created ben Miller 2025-04-30 ben@benlight.net
-*/
-
 Let ([
+~width = If ( not GetAsNumber ( widthPx ) ; 50 ; GetAsNumber( widthPx ));
+~height = If ( not GetAsNumber ( heightPx ) ; 50 ; GetAsNumber( heightPx));
+~bgColor = If ( IsEmpty( bgColor ) ; "#f0f0f0" ; bgColor ) ;
+~color1 = If ( IsEmpty( color1 ) ; "#2C4A69" ; color1 ) ;
+~color2 = If ( IsEmpty( color2 ) ; "#ccc" ; color2 )
+];
 
- ~fontSize = If ( GetAsNumber( fontSize ) + 0 = 0 ; 16 ; GetAsNumber ( fontsize ))
+"<html>
+<head>
+    <meta charset=\"UTF-8\">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+    <title>Simple Loading Spinner</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: "& ~bgColor &";
+            font-family: Arial, sans-serif;
+        }
 
- ];
+        .spinner {
+            width: " & ~width & "px;
+            height: " & ~height & "px;
+            border: 5px solid " & ~color2 & ";
+            border-top: 5px solid " & ~color1 & ";
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
 
-"body {
-	font-family: \"Helvetica Neue\", sans-serif;
-	background-color: #FFFFFF;
-	margin: 0;
-	padding: 0;
-	color: #000000;
-	font-weight: 300;
-	font-size: " &  ~fontSize & " ;
-	text-align: left;
-}
-
-html::-webkit-scrollbar {
-	width: 10px;
-}
- 
-html::-webkit-scrollbar-track {
-	background: white;
-	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-}
- 
-html::-webkit-scrollbar-thumb {
-	background: grey;
-	radius: 8px;
-}"
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class=\"spinner\"></div>
+</body>
+</html>"
 )
