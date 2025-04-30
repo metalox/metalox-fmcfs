@@ -15,7 +15,6 @@ Created ben Miller 2025-04-09 benedick_m@beezwax.net
 */
 
 Let ([
-  ~content = content ;
   ~css = If ( IsEmpty  ( css ) ; webCssCosmoCSS ; css )
 ];
   List(
@@ -27,7 +26,7 @@ Let ([
   "</style>";
   "</head>";
   "<body>";
-  ~content;
+  content;
   "</body>";
   "</html>"
   )
