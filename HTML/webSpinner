@@ -1,3 +1,11 @@
+Let ([
+~width = If ( not GetAsNumber ( widthPx ) ; 50 ; GetAsNumber( widthPx ));
+~height = If ( not GetAsNumber ( heightPx ) ; 50 ; GetAsNumber( heightPx));
+~bgColor = If ( IsEmpty( bgColor ) ; "#f0f0f0" ; bgColor ) ;
+~color1 = If ( IsEmpty( color1 ) ; "#2C4A69" ; color1 ) ;
+~color2 = If ( IsEmpty( color2 ) ; "#ccc" ; color2 )
+];
+
 "<html>
 <head>
     <meta charset=\"UTF-8\">
@@ -10,15 +18,15 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
+            background-color: "& ~bgColor &";
             font-family: Arial, sans-serif;
         }
 
         .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #ccc;
-            border-top: 5px solid #2C4A69;
+            width: " & ~width & "px;
+            height: " & ~height & "px;
+            border: 5px solid " & ~color2 & ";
+            border-top: 5px solid " & ~color1 & ";
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -37,3 +45,4 @@
     <div class=\"spinner\"></div>
 </body>
 </html>"
+)
