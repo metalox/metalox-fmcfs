@@ -1,0 +1,47 @@
+/*
+FileMaker Custom Function: 
+webCssDefault( fontSize )
+
+Default css.
+Edit as neeeded for your file
+
+Parameters:
+	fontSize (optional) - number
+	if not sepcified default is set below
+
+Dependencies: none
+
+Created ben Miller 2025-04-30 ben@benlight.net
+*/
+
+Let ([
+
+ ~fontSize = If ( GetAsNumber( fontSize ) + 0 = 0 ; 16 ; GetAsNumber ( fontsize ))
+
+ ];
+
+"body {
+	font-family: \"Helvetica Neue\", sans-serif;
+	background-color: #FFFFFF;
+	margin: 0;
+	padding: 0;
+	color: #000000;
+	font-weight: 300;
+	font-size: " &  ~fontSize & " ;
+	text-align: left;
+}
+
+html::-webkit-scrollbar {
+	width: 10px;
+}
+ 
+html::-webkit-scrollbar-track {
+	background: white;
+	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+ 
+html::-webkit-scrollbar-thumb {
+	background: grey;
+	radius: 8px;
+}"
+)
