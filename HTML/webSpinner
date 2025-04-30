@@ -1,3 +1,23 @@
+/*
+FileMaker Custom Function: 
+webSpinner( widthPx ; heightPx ; bgColor ; color1 ; color2 )
+
+Outputs HTML, which can be displayed in a webviewer.
+A simple web spinner, size & colors configuable.
+
+Parameters:
+    widthPx - number
+    heightPx - number
+    bgColor - text, web colour, eg "#f0f0f0"
+    color1 - text, web colour, eg "#2C4A69"
+    color2 - text, web colour, eg "#ccc"
+    
+Dependencies: none
+
+Created ben Miller 2025-04-30 ben@benlight.net
+*/
+
+
 Let ([
 ~width = If ( not GetAsNumber ( widthPx ) ; 50 ; GetAsNumber( widthPx ));
 ~height = If ( not GetAsNumber ( heightPx ) ; 50 ; GetAsNumber( heightPx));
