@@ -5,7 +5,7 @@ Created: 2024 Ben Miller
 */
 
 Let ([
-	$script_log_result = JSONSetElement ( "" ; "" ;  $script_log_result ; JSONObject  )
+	$script_result = JSONSetElement ( "" ; "" ;  $script_result ; JSONObject  )
 
 	];
 
@@ -14,7 +14,7 @@ Let ([
 	;[  "SCRIPT_LOG_UUID" 	; $script_log_uuid  				; JSONString]
 	;[  "STOPPED_TIMESTAMP" ; Get(CurrentHostTimestamp) 		; JSONNumber ]
 	;[  "STOPPED_UTC_MS" 	; Get(CurrentTimeUTCMilliseconds) 	; JSONNumber ]
-	;[  "SCRIPT_LOG_RESULT" ;  $script_log_result 			; JSONObject ]
+	;[  "SCRIPT_LOG_RESULT" ;  $script_result 			; JSONObject ]
 
 	)
 )
