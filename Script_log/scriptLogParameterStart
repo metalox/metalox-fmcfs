@@ -1,0 +1,28 @@
+/*
+parameter for script log start (...) script
+
+
+Created: 2024 Ben Miller
+*/
+
+Let ( [
+
+	$script_log_uuid = Get(UUID);
+	$script_log_result = "{}"
+];
+
+	JSONSetElement ( "{}" 
+	
+		;[  "SCRIPT_LOG_UUID" 			; $script_log_uuid  				; JSONString]
+		;[  "SCRIPT_NAME" 				; Get(ScriptName) 					; JSONString ]
+		;[  "ACCOUNT" 					; Get(AccountName) 					; JSONString ]
+		;[  "STARTED_TIMESTAMP" 		; Get(CurrentHostTimestamp) 		; JSONNumber ]
+		;[  "STARTED_UTC_MS" 			; Get(CurrentTimeUTCMilliseconds) 	; JSONNumber ]
+		;[  "HOST_NAME" 				; Get(HostName) 					; JSONString]
+		;[  "HOST_IP" 					; Get(HostIPAddress) 				; JSONString]
+		;[  "APLICATION_VERSION" 		; Get(ApplicationVersion) 			; JSONString]
+		;[  "HOST_APLICATION_VERSION" 	; Get(HostApplicationVersion) 		; JSONString]
+
+	)
+
+)
