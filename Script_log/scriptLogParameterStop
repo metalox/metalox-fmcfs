@@ -1,8 +1,6 @@
 /*
 parameter for script log stop (...) script
 
-Dependencies: cf  scriptExitObjectSet ()
-
 Created: 2024 Ben Miller
 */
 
