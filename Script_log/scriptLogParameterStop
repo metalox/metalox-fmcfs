@@ -1,0 +1,22 @@
+/*
+parameter for script log stop (...) script
+
+Dependencies: cf  scriptExitObjectSet ()
+
+Created: 2024 Ben Miller
+*/
+
+Let ([
+
+	$script_log_result = JSONSetElement ( "{}" ; "" ;  $script_log_result ; JSONObject  )
+];
+
+	JSONSetElement ( "{}" 
+
+		;[  "SCRIPT_LOG_UUID" 	; $script_log_uuid  				; JSONString]
+		;[  "STOPPED_TIMESTAMP" ; Get(CurrentHostTimestamp) 		; JSONNumber ]
+		;[  "STOPPED_UTC_MS" 	; Get(CurrentTimeUTCMilliseconds) 	; JSONNumber ]
+		;[	"SCRIPT_EXIT_OBJECT" 	;  scriptExitObjectSet  			; JSONObject ]
+
+	)
+)
