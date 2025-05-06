@@ -7,7 +7,7 @@ Created: 2024 Ben Miller
 
 Let ( [
 
-	$script_log_uuid = Get(UUID);
+	$script_log_uuid = Get(UUID)
 ];
 
 	JSONSetElement ( "{}" 
