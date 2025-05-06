@@ -14,7 +14,7 @@ Let ([
 	;[  "SCRIPT_LOG_UUID" 	; $script_log_uuid  			; JSONString]
 	;[  "STOPPED_TIMESTAMP" ; Get(CurrentHostTimestamp) 		; JSONNumber ]
 	;[  "STOPPED_UTC_MS" 	; Get(CurrentTimeUTCMilliseconds) 	; JSONNumber ]
-	;[  "SCRIPT_RESULT" ;  $script_result 				; JSONObject ]
+	;[  "SCRIPT_RESULT" 	;  $script_result 			; JSONObject ]
 
 	)
 )
