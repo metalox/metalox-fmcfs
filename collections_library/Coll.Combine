@@ -1,0 +1,15 @@
+/* FileMaker Custom Function
+Coll.Combine( ~baseCollectionID; ~addCollectionID )
+*/
+
+Coll.Ω ( 
+	"Combine" ; "" ; "" ; "" ; "" ; 
+	JSONSetElement ( "[]" 
+		; [ 0 ;  ~baseCollectionID ; JSONString ]
+		; [ 1 ;  ~addCollectionID ; JSONString ] 
+	) 
+)
+
+/*
+	Combine two Collections by stacking the addCollection on top of the base Collection.
+*/
