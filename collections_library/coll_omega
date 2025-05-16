@@ -1,4 +1,4 @@
-/* Collection LIbrary V1.0.0
+/* Collection LIbrary V1.1.0
 2021-02-24 Nat Robinson, Beezwax Datatools 
 
 FileMaker Custom Function
@@ -6,14 +6,15 @@ coll.Ω ( function ; convertedVarName ; index ; value ; size ; collectionID )
 
 
 Version History
-  2021-02-24 - Created, Nat Robinson
+	2021-02-24 - V1.0.0 Created, Nat Robinson
+	2021-02-24 - V1.1.0 Added Coll.Sum, Nat Robinson
 */
 
 
 Case(
 
 
-/* PRIVATE FUNCTIONS - CALLED ONLY RECURSIVELY FROM WITHIN THIS FUNCTION */
+/*PRIVATE FUNCTIONS - CALLED ONLY ERCURSIVELY FROM WITHIN THIS FUNCTION */
 
 
 
@@ -803,15 +804,12 @@ Case(
 		);
 
 	
-	function = "ToJsonArray" or function = "ToArray" ;
+	function = "Sum" ;
 
-		/* 	TOARRAY:
-			Convert the Collection to a JSON Array.
-			Valid JSON objects and arrays will be added as such.
-			All other values will be treated as strings.
-			Empty values will go in as empty string.
-			Empty or nonexistent Collections will result in an empty array.
-			Number of elements in the array will match exactly the size of the collection.
+		/* 	SUM:
+			Sum the elements of the collections.
+			Uses FileMaker standard "+" operator.  Same consequences of non-numbers apply.
+			Does not automatically convert to strings to numbers.
 		*/
 		
 		Let( [
@@ -820,33 +818,69 @@ Case(
 		];
 			If(
 				~size < 1 ;
-					"[]" ;
+					"" ;
 				SetRecursion(
 				While ( 
 					[ 
-						~array = "[" ;
+						~sum = "" ;
 						~index = 1 
 					] ; 
 						~index <= ~size ; 
 					[ 
 						~value = Coll.Ω( "ΩgetValue" ; ~convertedVarName; ~index ;"";"";"") ;
-						~jfe_start = Left( JSONFormatElements ( ~value ) ; 1 ) ;
-						~comma = If ( ~index > 1 ; "," ; "" ) ;
-						~value_to_insert = 
-							Case(
-								~jfe_start = "{" ; 
-									JSONSetElement ( "{}" ; "" ; ~value ; JSONObject ) ;
-								~jfe_start = "[" ; 
-									JSONSetElement ( "[]" ; "" ; ~value ; JSONArray ) ;
-								Let( ~string = JSONSetElement ( "[]" ; 0 ; ~value ; JSONString ) ; Middle ( ~string ; 2 ; Length ( ~string) - 2 ) ) 
-							) ;
-						~array = ~array & ~comma & ~value_to_insert ;
+						~sum = ~sum + ~value ;
 						~index = ~index + 1 
 					] ; 
-						~array & "]"
+						~sum
 				);1000000 )
 			) 
 		) ;
+		
+
+		function = "ToJsonArray" or function = "ToArray" ;
+
+			/* 	TOARRAY:
+				Convert the Collection to a JSON Array.
+				Valid JSON objects and arrays will be added as such.
+				All other values will be treated as strings.
+				Empty values will go in as empty string.
+				Empty or nonexistent Collections will result in an empty array.
+				Number of elements in the array will match exactly the size of the collection.
+			*/
+		
+			Let( [
+				~convertedVarName = Coll.Ω ( "ΩconvertID";"";"";"";""; collectionID ) ; 
+				~size = Coll.Ω( "ΩgetSize" ; ~convertedVarName ; ""; "";""; "") 
+			];
+				If(
+					~size < 1 ;
+						"[]" ;
+					SetRecursion(
+					While ( 
+						[ 
+							~array = "[" ;
+							~index = 1 
+						] ; 
+							~index <= ~size ; 
+						[ 
+							~value = Coll.Ω( "ΩgetValue" ; ~convertedVarName; ~index ;"";"";"") ;
+							~jfe_start = Left( JSONFormatElements ( ~value ) ; 1 ) ;
+							~comma = If ( ~index > 1 ; "," ; "" ) ;
+							~value_to_insert = 
+								Case(
+									~jfe_start = "{" ; 
+										JSONSetElement ( "{}" ; "" ; ~value ; JSONObject ) ;
+									~jfe_start = "[" ; 
+										JSONSetElement ( "[]" ; "" ; ~value ; JSONArray ) ;
+									Let( ~string = JSONSetElement ( "[]" ; 0 ; ~value ; JSONString ) ; Middle ( ~string ; 2 ; Length ( ~string) - 2 ) ) 
+								) ;
+							~array = ~array & ~comma & ~value_to_insert ;
+							~index = ~index + 1 
+						] ; 
+							~array & "]"
+					);1000000 )
+				) 
+			) ;
 		
 
 	function = "ToList" ;
