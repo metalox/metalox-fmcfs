@@ -1,0 +1,7 @@
+/* FileMaker Custom Function
+Coll.Append( ~collectionID ; ~value )
+*/
+
+Coll.Ω ( "Append" ; "" ; "" ; ~value ; "" ; ~collectionID )
+
+/* 	Adds a row to the end of a collection   */
