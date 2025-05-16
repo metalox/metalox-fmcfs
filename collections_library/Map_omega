@@ -1,6 +1,9 @@
 /* Map Library V1.0.1 
 2021-04-05 - Nat Robinson, Beezwax Datatools, Inc.
 
+FileMaker Custom Function
+Map.Ω ( function ; mapName ; key ; convertedMapPrefix ; convertedKeySuffix ; size ; value ; needsRefresh )
+
 Version History
 Created:   	2021-02-24 - Nat Robinson
 Modified:
