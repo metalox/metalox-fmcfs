@@ -1,0 +1,16 @@
+/* FileMaker Custom Function
+Coll.Clone( ~sourceCollectionID ; ~targetCollectionID )
+*/
+
+Coll.Ω ( 
+	"Clone" ; "" ; "" ; "" ; "" ; 
+	JSONSetElement ( "[]" 
+		; [ 0 ;  ~sourceCollectionID ; JSONString ]
+		; [ 1 ;  ~targetCollectionID ; JSONString ] 
+	) 
+)
+
+
+/*
+	Duplicate the sourceCollection with the name targetCollection.
+*/
