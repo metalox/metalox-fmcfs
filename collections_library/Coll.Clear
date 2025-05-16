@@ -1,0 +1,7 @@
+/* FileMaker Custom Function
+Coll.Clear( ~collectionID )
+*/
+
+Coll.Ω ( "Clear" ; "" ; "" ; "" ; "" ; ~collectionID )
+
+/* Clear all traces of a collection. */
