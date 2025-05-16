@@ -1,0 +1,9 @@
+/* FileMaker Custom Function
+Coll.FromList( ~collectionID ; ~valueList )
+*/
+
+Coll.Ω ( "FromList" ; "" ; "" ; ~valueList ; "" ; ~collectionID )
+
+/*
+	Translates a value list into a collection.
+*/
