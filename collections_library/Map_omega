@@ -1,0 +1,926 @@
+/* Map Library V1.0.1 
+2021-04-05 - Nat Robinson, Beezwax Datatools, Inc.
+
+Version History
+Created:   	2021-02-24 - Nat Robinson
+Modified:
+			2021-04-02 - Nat Robinson
+				Added ΩsetMapKeyArray, ΩgetMapKeyArray.  Modified everything to use a key array instead of collection.
+ */
+
+Case(
+
+
+
+
+/* PRIVATE FUNCTIONS */
+
+	function = "ΩCleanUpKeys" ;
+
+	/* 	CLEANUPKEYS
+		Refresh the Map Key Collection. 
+	*/
+		
+		Let ( [
+			~convertedMapPrefix = 	Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~uuid_map = 	Get(UUID ) ;
+			~uuid_key_list = 	Get(UUID ) ;
+			~uuid_collection = 	Get(UUID ) ;
+			~incomingIndex = Map.Ω ( "ΩgetCurrentIndex" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~currentKey = Map.Ω ( "ΩgetKeyAtIndex" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; ~incomingIndex ; "" ) ;
+			~key_array = Map.Ω ( "ΩgetMapKeyArray" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = 
+				SetRecursion ( 
+				While ( 
+					[ 
+						~void = Map.Ω ( "New" ; ~uuid_map ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+		
+						~void = Coll.New( ~uuid_collection  ) ;
+		
+						~void = Coll.FromArray( ~uuid_key_list ; ~key_array  ) ;
+
+						~size = 0 ;
+						~currentIndex = 0 
+		
+					] ; 
+						Coll.GoToNext ( ~uuid_key_list)  ; 
+					[ 
+						~key =  Coll.Get ( ~uuid_key_list)  ; 
+						~exists =  Map.Get ( ~uuid_map ; ~key)  ; 
+						~void = If( not ~exists ; Map.Set( ~uuid_map ; ~key; True )  ) ;
+						~void = If( not ~exists ; Coll.Append( ~uuid_collection ; ~key ) );
+						~size = If( not ~exists ; ~size + 1 ; ~size )  ;
+						~currentIndex = If ( Exact( ~key ; ~currentKey )  and ( not ~exists ) ; ~size ; ~currentIndex )   
+		
+					] ; 
+						Map.Ω ( "ΩsetMapKeyArray" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; Coll.ToArray( ~uuid_collection ) ; "" ) &
+						Coll.Clear ( ~uuid_collection  ) & 
+						Map.Clear ( ~uuid_map  ) & 
+						Coll.Clear ( ~uuid_key_list  ) & 
+						Map.Ω ( "ΩsetSize" ; "" ; "" ; ~convertedMapPrefix ; "" ; ~size ; "" ; "" ) &
+						Map.Ω ( "ΩsetNeedsRefresh" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; False ) &
+						Map.Ω ( "ΩsetCurrentIndex" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; ~currentIndex ; "" ) & 
+						Map.Ω ( "ΩsetCurrentKey" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; If (~currentIndex = 0 ; "" ; ~currentKey ) ; "" ) 
+		
+				 ) 
+				; 1000000 )
+		
+		] ;
+		
+			True
+		
+		) ;
+
+
+	function =  "ΩconvertMapName" ;
+		/* convert the MapID to its variable prefix  */
+		Let( [
+
+			~name_scrubbed = 
+				Filter ( 
+					Substitute( mapName; " " ; "_" )  ; 
+					"aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ1234567890" 
+				);
+			~prefix =
+				If ( 
+					Left ( mapName ; 2 ) = "$$" ; 
+						 "$$Ωmap__" ; 
+					"$Ωmap__"
+				)  
+		] ;
+			~prefix & Left ( ~name_scrubbed ; 36)  & "__" & Left( GetContainerAttribute ( mapName ; "MD5" ) ; 8 ) 
+		) ;
+
+	function =  "ΩconvertKey" ;
+		/* convert the Key to its variable suffix  */
+		Let( [
+			 ~key_clean = 
+				Filter ( 
+					key  ; 
+					"aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ1234567890" 
+				)  
+		] ;
+			"__" & Left ( ~key_clean ; 36)  & "__" & Left( GetContainerAttribute ( key ; "MD5" ) ; 8 ) 
+		) ;
+
+
+
+	function =  "ΩsetMapName" ;
+		/* Set name of the Map */
+		Let( [
+			~incoming_priv_map = $__priv_map;
+			$__priv_map = mapName ;
+			~void = Evaluate ( "Let( " & convertedMapPrefix & "@mapName = $__priv_map ; \"\" )" )  ;
+			$__priv_map = ~incoming_priv_map 
+		];
+			""
+		) ;
+			
+
+	function =  "ΩsetMapKeyArray" ;
+		/* Set key array of the Map */
+		Let( [
+			~incoming_priv_map = $__priv_map;
+			$__priv_map = value ;
+			~void = Evaluate ( "Let( " & convertedMapPrefix & "@mapKeys = $__priv_map ; \"\" )" )  ;
+			$__priv_map = ~incoming_priv_map 
+		];
+			""
+		) ;
+			
+
+	function =  "ΩAppendMapKeyArray" ;
+		/* Set key array of the Map */
+		Let( [
+			~incoming_array = Evaluate ( convertedMapPrefix & "@mapKeys" ) ;
+			~value_json = JSONSetElement ( "[]"; 0 ; key ; JSONString ) ;
+			~value_json = Middle ( ~value_json ; 2; Length( ~value_json) - 2 ) ;
+			~len_incoming = Length ( ~incoming_array );
+			~map_key_array = 
+				If(
+					~len_incoming < 3 ;
+						"[" & ~value_json & "]";
+					Left(~incoming_array ; ~len_incoming - 1) & "," &  ~value_json & "]"  
+				)  ;
+			~incoming_priv_map = $__priv_map;
+			$__priv_map = ~map_key_array ;
+			~void = Evaluate ( "Let( " & convertedMapPrefix & "@mapKeys = $__priv_map ; \"\" )" )  ;
+			$__priv_map = ~incoming_priv_map 
+		];
+			""
+		) ;
+			
+
+	function =  "ΩgetMapKeyArray" ;
+		/* Return whether the Map Key List needs a refresh */
+		Evaluate ( convertedMapPrefix & "@mapKeys" )  ;
+
+
+	function =  "ΩgetNeedsRefresh" ;
+		/* Return whether the Map Key List needs a refresh */
+		Evaluate ( convertedMapPrefix & "@needsRefresh" )  ;
+
+
+	function =  "ΩsetNeedsRefresh" ;
+		/* Set boolean of whether the Map Key List needs a refresh */
+		Let( [
+			~incoming_priv_map = $__priv_map;
+			$__priv_map = needsRefresh ;
+			~void = Evaluate ( "Let( " & convertedMapPrefix & "@needsRefresh = $__priv_map ; \"\" )" )  ;
+			$__priv_map = ~incoming_priv_map 
+		];
+			""
+		) ;
+
+
+	function =  "ΩsetValue" ;
+		/* Set value of a specififc key */
+		Let( [
+			~incoming_priv_map = $__priv_map;
+			$__priv_map = value ;
+			~void = Evaluate ( "Let( " & convertedMapPrefix & convertedKeySuffix & " = $__priv_map ; \"\" )" )  ;
+			$__priv_map = ~incoming_priv_map 
+		];
+			""
+		) ;
+
+
+	function =  "ΩgetValue" ;
+		/* Return value at a specific key */
+		Evaluate ( convertedMapPrefix & convertedKeySuffix )  ;
+
+
+
+	function =  "ΩgetKeyAtIndex" ;
+		/* Return the currently selected key during iteration */
+		Let(
+			~key_array = Evaluate ( convertedMapPrefix & "@mapKeys" ) ;
+			Case ( 
+				IsEmpty ( ~key_array) ; "" ; 
+				value < 1  ; "" ; 
+				JSONGetElement ( ~key_array ; value - 1 ) )
+		) ;
+
+
+	function =  "ΩgetCurrentIndex" ;
+		/* Return the index of currently selected key during iteration */
+		Evaluate ( convertedMapPrefix & "@currentIndex" )  ;
+
+
+
+	function =  "ΩsetCurrentIndex" ;
+		/* Return the index of currently selected key during iteration */
+		Let( [
+			~incoming_priv_map = $__priv_map;
+			$__priv_map = value ;
+			~void = Evaluate ( "Let( " & convertedMapPrefix & "@currentIndex = $__priv_map ; \"\" )" )  ;
+			$__priv_map = ~incoming_priv_map 
+		];
+			""
+		) ;
+
+
+	function =  "ΩgetSize" ;
+		/* Return the total count of keys  */
+		Evaluate ( convertedMapPrefix & "@size" ) ;
+
+	function =  "ΩsetSize" ;
+		/* Set the total count of keys  */
+		Let( [
+			~incoming_priv_map = $__priv_map;
+			$__priv_map = size ;
+			~void = Evaluate ( "Let( " & convertedMapPrefix & "@size = $__priv_map ; \"\" )" )  ;
+			$__priv_map = ~incoming_priv_map 
+		];
+			""
+		) ;
+
+
+/* END PRIVATE FUNCTIONS */
+
+
+/* PUBLIC FUNCTIONS */
+
+
+
+	Function = "Clear";
+
+	/* 	CLEAR
+		Clear existing Map, all keys, and associated data.  
+	*/
+		
+		Let ( [
+			~convertedMapPrefix = 	Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~void = Map.Ω ( "ΩsetNeedsRefresh" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = Map.Ω ( "ΩsetSize" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = Map.Ω ( "ΩsetMapName" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = Map.Ω ( "ΩsetCurrentIndex" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = Map.Ω ( "ΩsetCurrentKey" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~key_array = Map.Ω ( "ΩgetMapKeyArray" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~uuid_key_array = Get(UUID) ;
+			~void = 
+				While ( 
+					[ 
+						~void = Coll.FromArray(~uuid_key_array ; ~key_array ) 
+					] ; 
+						Coll.GoToNext(~uuid_key_array)  ; 
+					[ 
+						~key = Coll.Get(~uuid_key_array) ;
+						~convertedKeySuffix = Map.Ω ( "ΩconvertKey" ; "" ; ~key ; "" ; "" ; "" ; "" ; "" ) ;
+						~void = Map.Ω ( "ΩsetValue" ; "" ; "" ; ~convertedMapPrefix ; ~convertedKeySuffix ; "" ; "" ; "" )
+					] ; 
+						"" 
+				);
+		
+			~void = Coll.Clear (  ~uuid_key_array ) ;
+			~void = Map.Ω ( "ΩsetMapKeyArray" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) 
+		
+		] ;
+		
+			True
+		
+		);
+
+
+	Function = "Delete";
+
+		/*	DELETE 
+		Delete key value pair in the map.
+		
+		Refreshes the keys collection if needed.
+		If key is non-existent, return 0, otherwise delete and return 1.
+		If that key is the currently iterated key, iterate to the previous key.
+		*/
+		
+		Let ( [
+			~convertedMapPrefix = Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~needsRefresh = Map.Ω ( "ΩgetNeedsRefresh" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = If ( ~needsRefresh ; Map.Ω ( "ΩCleanUpKeys" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) )  ;
+		
+			~convertedKeySuffix = Map.Ω ( "ΩconvertKey" ; "" ; key ; "" ; "" ; "" ; "" ; "" ) ;
+			~void = Map.Ω ( "ΩsetValue" ; "" ; "" ; ~convertedMapPrefix ; ~convertedKeySuffix ;"" ; "" ; "" )  ;
+			~key_array = Map.Ω ( "ΩgetMapKeyArray" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~keys_uuid = Get(UUID) ;
+			~currentIndex = Map.Ω ( "ΩgetCurrentIndex" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" )
+		] ;
+			While( 
+				[
+					~size = Map.Ω ( "ΩgetSize" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+					~void = Coll.FromArray( ~keys_uuid ; ~key_array ) ;
+					~result = False 
+				] ;
+					Coll.GoToNext(  ~keys_uuid ) ;
+				[
+					~collection_key = Coll.Get (  ~keys_uuid ) ;
+					~collection_index = Coll.GetCurrentIndex (  ~keys_uuid ) ;
+					~void  =
+						If ( 
+							Exact  ( key ; ~collection_key ) ; 
+								Coll.Remove(~keys_uuid) &  
+								If( 
+									~currentIndex >= ~collection_index ; 
+										Map.Ω ( "ΩsetCurrentIndex" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; ~currentIndex - 1 ; "" )
+								) &
+								If ( 
+									not ~result ;
+							 			Map.Ω ( "ΩsetSize" ; "" ; "" ; ~convertedMapPrefix ; "" ; ~size - 1 ; "" ; "" )  
+								)
+						);
+					~result  =  If ( Exact  ( key ; ~collection_key ) ; True; ~result ) 
+				];
+		
+					~result &  
+					Let( [
+						~void = Map.Ω ( "ΩsetMapKeyArray" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; Coll.ToArray(~keys_uuid) ; "" ) ;
+						~void = Coll.Clear ( ~keys_uuid ) 
+					]; 
+						""  )  
+			)
+		);
+
+	Function = "FromObject";
+
+		/*	FROMOBJECT:
+			Translates a JSON Object into a Map.
+			If a map exists by that id already it will be cleared out.
+			Not valid JSON object will produce a blank map.
+			Null values in the array will create an empty element in the collection.
+		*/
+		Let ( [
+			~void = Map.Ω ( "New" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~convertedMapPrefix = Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~jfe_object = JSONFormatElements (  value ) ;
+			~keys_uuid = Get(UUID) 
+		];
+			Case(
+				Left( ~jfe_object ; 1) ≠ "{" ;
+					False ;
+				Left( ~jfe_object ; 2 )= "{}" ;
+					True ;
+				Let( [
+					~fake_sep = Char( 9000090001300044 ) ;
+					~true_sep = Char( 90001300044 ) ;
+					~fake_sep_uuid =  Left( Get(UUID); 6 ) ;
+					~true_sep_uuid =  Left ( Get(UUID); 6 ) ;
+					~cr_uuid = Left ( Get(UUID); 6 ) ;
+					~jfe_object_sub = Middle ( ~jfe_object ; 4 ; Length( ~jfe_object) - 5  );
+					~jfe_object_sub = 
+						Substitute ( ~jfe_object_sub 
+							; [ ~fake_sep ; ~fake_sep_uuid ]  
+							; [ ~true_sep ; ~true_sep_uuid ]  
+							; [ "¶" ; ~cr_uuid ]  
+							; [ ~true_sep_uuid ; "¶" ]  
+						)  ;
+		
+		
+					~uuid_collection  = Get(UUID);
+					~void = Coll.FromList ( ~uuid_collection ; ~jfe_object_sub )
+		
+				];
+		
+					SetRecursion ( 
+					While ( 
+						[ 
+							~size = Coll.GetSize ( ~uuid_collection ) 
+						] ; 
+							Coll.GoToNext ( ~uuid_collection ) ;
+						[ 
+							~obj =  	Coll.Get ( ~uuid_collection ) ; 
+							~obj = "{" & Substitute ( ~obj ; [ ~cr_uuid ; "¶" ] ; [ ~fake_sep_uuid ; ~fake_sep ] )  & "}" ; 
+							~key = JSONListKeys( ~obj ; "" ) ; 
+							~value = JSONListValues( ~obj ; "" ) ;
+		
+							~convertedKeySuffix = Map.Ω ( "ΩconvertKey" ; "" ; ~key ; "" ; "" ; "" ; "" ; "" ) ;
+							~void = Map.Ω ( "ΩsetValue" ; "" ; "" ; ~convertedMapPrefix ; ~convertedKeySuffix ;"" ; ~value ; "" ) ;
+							~void = Coll.Append ( ~keys_uuid ; ~key )
+						] ; 
+						Let( [
+							~void = Map.Ω ( "ΩsetSize" ; "" ; "" ; ~convertedMapPrefix ; "" ; ~size ; "" ; "" ) ;
+							~void = Coll.Clear ( ~uuid_collection ) ;
+							~void = Map.Ω ( "ΩsetMapKeyArray" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; Coll.ToArray(~keys_uuid) ; "" ) ;
+							~void = Coll.Clear ( ~keys_uuid )
+							];
+							True
+						)
+					); 1000000 )	
+				)
+			)		
+		);
+
+		
+	Function = "Get";
+
+		/*	GET: 
+		Sets a key to the map. 
+		If the Map doesn't exist, then create it. 
+		*/
+		
+		Let ( [
+		
+			~convertedMapPrefix = Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~convertedKeySuffix = Map.Ω ( "ΩconvertKey" ; "" ; key ; "" ; "" ; "" ; "" ; "" )
+		] ;
+			Map.Ω ( "ΩgetValue" ; "" ; "" ; ~convertedMapPrefix ; ~convertedKeySuffix ;  "" ;"" ; "" ) 
+		);
+
+
+	Function = "GetCurrentIndex";
+
+		/*	GETCURRENTINDEX: 
+		Returns the current index when iterating through a map. 
+		*/
+		
+		Let ( [
+		
+			~convertedMapPrefix = Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~needsRefresh = Map.Ω ( "ΩgetNeedsRefresh" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = If ( ~needsRefresh ;  Map.Ω ( "ΩCleanUpKeys" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ))  
+		
+		] ;
+			Map.Ω ( "ΩgetCurrentIndex" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" )
+		);
+
+
+	Function = "GetCurrentKey";
+
+		/* 	GETCURRENTKEY:
+			Returns the current value when iterating through a map. 
+		*/
+		
+		Let ( [
+		
+			~convertedMapPrefix = Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~needsRefresh = Map.Ω ( "ΩgetNeedsRefresh" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = If ( ~needsRefresh ;  Map.Ω ( "ΩCleanUpKeys" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ))  ;
+			~currentIndex = Map.Ω ( "ΩgetCurrentIndex" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) 
+		
+		] ;
+			Map.Ω ( "ΩgetKeyAtIndex" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; ~currentIndex ; "" )
+		);
+
+	Function = "GetCurrentValue";
+
+		/* 	GETCURRENTVALUE:
+			Returns the current value when iterating through a map. 
+		*/
+		
+		Let ( [
+		
+			~convertedMapPrefix = Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~needsRefresh = Map.Ω ( "ΩgetNeedsRefresh" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = If ( ~needsRefresh ;  Map.Ω ( "ΩCleanUpKeys" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ))  ;
+			~currentIndex = Map.Ω ( "ΩgetCurrentIndex" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" )  ;
+			~key = Map.Ω ( "ΩgetKeyAtIndex" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; ~currentIndex ; "" )
+		
+		] ;
+			If(
+				IsEmpty( ~key) ;
+					""; 
+				Let(
+					~convertedKeySuffix = Map.Ω ( "ΩconvertKey" ; "" ; ~key ; "" ; "" ; "" ; "" ; "" ) ;
+					Map.Ω ( "ΩgetValue" ; "" ; "" ; ~convertedMapPrefix ; ~convertedKeySuffix ;  "" ;"" ; "" ) 
+				)
+			)
+		
+		);
+
+
+	Function = "GetSize";
+
+		/*	GETSIZE: 
+		Return the number of uniqie keys of the map. 
+		If the Map doesn't exist, then return blank. 
+		*/
+		
+		Let ( [
+		
+			~convertedMapPrefix = Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~needsRefresh = Map.Ω ( "ΩgetNeedsRefresh" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = If ( ~needsRefresh ;  Map.Ω ( "ΩCleanUpKeys" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ))  ;
+			~key_array = Map.Ω ( "ΩgetMapKeyArray" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) 
+
+		] ;
+			If(
+				IsEmpty ( ~key_array ) ; 0 ; ValueCount ( JSONListKeys(~key_array  ; "" ) )
+
+			)
+		);
+
+	Function = "GoToFirst" ;
+
+		/* 	GOTOFIRST:
+			Navigate to the first index when iterating through a map. 
+		*/
+		
+		Let ( [
+		
+			~convertedMapPrefix = Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~needsRefresh = Map.Ω ( "ΩgetNeedsRefresh" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = If ( ~needsRefresh ;  Map.Ω ( "ΩCleanUpKeys" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ))  ;
+			~size = Map.Ω ( "ΩgetSize" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" )  
+		] ;
+			Case(
+				IsEmpty( ~size) ;
+					False; 
+				 ~size < 1 ;
+					False; 
+				Let(
+					~void = Map.Ω ( "ΩsetCurrentIndex" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; 1 ; "" );
+					True
+				)
+			)
+		);
+
+	Function = "GoToIndex";
+
+		/* 	GOTOINDEX:
+			Navigate to the specified index when iterating through a map. 
+		*/
+		
+		Let ( [
+			~index = value ;
+			~convertedMapPrefix = Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~needsRefresh = Map.Ω ( "ΩgetNeedsRefresh" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = If ( ~needsRefresh ;  Map.Ω ( "ΩCleanUpKeys" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ))  ;
+			~size = Map.Ω ( "ΩgetSize" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" )  
+		] ;
+			Case(
+				IsEmpty( ~size) ;
+					False; 
+				~index > ~size ;
+					False; 
+				~index < 0 ;
+					False; 
+				Let(
+					~void = Map.Ω ( "ΩsetCurrentIndex" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; ~index ; "" );
+					True
+				)
+			)
+		);
+
+	Function = "GoToLast";
+
+		/*	GOTOLAST: 
+		Navigate to the last index when iterating through a map. 
+		*/
+		
+		Let ( [
+		
+			~convertedMapPrefix = Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~needsRefresh = Map.Ω ( "ΩgetNeedsRefresh" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = If ( ~needsRefresh ;  Map.Ω ( "ΩCleanUpKeys" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ))  ;
+			~size = Map.Ω ( "ΩgetSize" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" )  
+		] ;
+			Case(
+				IsEmpty( ~size) ;
+					False; 
+				 ~size < 1 ;
+					False; 
+				Let(
+					~void = Map.Ω ( "ΩsetCurrentIndex" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; ~size ; "" );
+					True
+				)
+			)
+		)
+		;
+
+	Function = "GoToNext";
+
+		/* 	GOTONEXT:
+			Increment the current index by 1.
+		*/
+		
+		Let ( [
+		
+			~convertedMapPrefix = Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~needsRefresh = Map.Ω ( "ΩgetNeedsRefresh" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = If ( ~needsRefresh ;  Map.Ω ( "ΩCleanUpKeys" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ))  ;
+			~size = Map.Ω ( "ΩgetSize" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" )  ;
+			~currentIndex = Map.Ω ( "ΩgetCurrentIndex" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) 
+		] ;
+			Case(
+				IsEmpty( ~size) ;
+					False; 
+				~currentIndex >= ~size ;
+					False; 
+				Let(
+		
+					~void = Map.Ω ( "ΩsetCurrentIndex" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; ~currentIndex + 1 ; "" );
+					True
+				)
+			)
+		);
+
+	Function = "GoToPrevious";
+
+		/* 	GOTOPREVIOUS:
+			Decrement the current Index by 1.
+		*/
+		
+		Let ( [
+		
+			~convertedMapPrefix = Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~needsRefresh = Map.Ω ( "ΩgetNeedsRefresh" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = If ( ~needsRefresh ;  Map.Ω ( "ΩCleanUpKeys" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ))  ;
+			~size = Map.Ω ( "ΩgetSize" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" )  ;
+			~currentIndex = Map.Ω ( "ΩgetCurrentIndex" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) 
+		] ;
+			Case(
+				IsEmpty( ~size) ;
+					False; 
+				~currentIndex <= 1 ;
+					False; 
+				Let(
+		
+					~void = Map.Ω ( "ΩsetCurrentIndex" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; ~currentIndex - 1 ; "" );
+					True
+				)
+			)
+		);
+
+
+	Function = "GoToZero" ;
+
+		/* 	GOTOZERO:
+			Navigate to before first index for iterating through a map from the start. 
+		*/
+		
+		Let ( [
+		
+			~convertedMapPrefix = Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~needsRefresh = Map.Ω ( "ΩgetNeedsRefresh" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = If ( ~needsRefresh ;  Map.Ω ( "ΩCleanUpKeys" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ))  ;
+			~size = Map.Ω ( "ΩgetSize" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" )  
+		] ;
+			Case(
+				IsEmpty( ~size) ;
+					False; 
+				 ~size < 0 ;
+					False; 
+				Let(
+					~void = Map.Ω ( "ΩsetCurrentIndex" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; 0 ; "" );
+					True
+				)
+			)
+		);
+
+
+	Function = "Has";
+		/*	HASKEY: 
+		If the key exists within a map, return 1, otherwise 0
+		If the map is nonexistent or empty, also return 0.
+		*/
+		
+		Let ( [
+		
+			~convertedMapPrefix = Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~needsRefresh = Map.Ω ( "ΩgetNeedsRefresh" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = If ( ~needsRefresh ;  Map.Ω ( "ΩCleanUpKeys" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ))  ;
+			~size = Map.Ω ( "ΩgetSize" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" )  ;
+			~key_array = Map.Ω ( "ΩgetMapKeyArray" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~uuid_key_list = Get(UUID) 
+		
+		] ;
+			Case(
+				~size < 1 ; 
+					False ;
+				While( 
+					[
+						~incoming_index = Coll.GetCurrentIndex( ~convertedMapPrefix ) ;
+						~void = Coll.FromArray( ~uuid_key_list ; ~key_array )  ;
+						~result = False 
+					];	
+						Coll.GoToNext( ~uuid_key_list ) and not ~result ;
+					[
+						~result = Exact ( key ; Coll.Get (  ~uuid_key_list ) ) 
+					];				
+						~result & 
+						Let ( ~void = Coll.Clear( ~uuid_key_list ) ; "" )
+				
+				)
+			)
+		);
+
+
+	Function = "KeyArray";
+		/* 	KEYARRAY 
+			Output the list of unique keys as an array list, in order the keys were created. 
+		*/
+		
+		Let ( [
+		
+			~convertedMapPrefix = Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~needsRefresh = Map.Ω ( "ΩgetNeedsRefresh" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = If ( ~needsRefresh ;  Map.Ω ( "ΩCleanUpKeys" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" )) ;
+			~key_array = Map.Ω ( "ΩgetMapKeyArray" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~uuid_key_list = Get(UUID) ;
+			~void = Coll.FromArray ( ~uuid_key_list ; ~key_array )			  
+		] ;
+			Coll.ToArray(~uuid_key_list) & Let( ~void = Coll.Clear( ~uuid_key_list ) ; "" )
+		);
+
+
+	Function = "KeyList" ;
+		/*	KEYLIST: 
+			Output the list of unique keys as a value list, in order the keys were created. 
+		*/
+		
+		Let ( [
+		
+			~convertedMapPrefix = Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~needsRefresh = Map.Ω ( "ΩgetNeedsRefresh" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = If ( ~needsRefresh ;  Map.Ω ( "ΩCleanUpKeys" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ))  ;
+			~key_array = Map.Ω ( "ΩgetMapKeyArray" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~uuid_key_list = Get(UUID) ;
+			~void = Coll.FromArray ( ~uuid_key_list ; ~key_array )			  
+		] ;
+			Coll.ToList(~uuid_key_list) & Let( ~void = Coll.Clear( ~uuid_key_list ) ; "" )
+		);
+
+	Function = "New";
+
+		/* 	NEW:
+			Creates a new Map.  First clear out if the Map already exists. 
+		*/
+		
+		Let ( [
+			~void = Map.Clear ( mapName ) ;
+			~convertedMapPrefix = 	Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~void = Map.Ω ( "ΩsetNeedsRefresh" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; False ) ;
+			~void = Map.Ω ( "ΩsetSize" ; "" ; "" ; ~convertedMapPrefix ; "" ; 0 ; "" ; "" ) ;
+			~void = Map.Ω ( "ΩsetMapName" ; mapName ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = Map.Ω ( "ΩsetCurrentIndex" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; 0 ; "" ) ;
+			~void = Map.Ω ( "ΩsetMapKeyArray" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "[]" ; "" ) 
+		
+		] ;
+		
+			True
+		
+		);
+
+
+	Function = "Set";
+
+		/*	SET: 
+			Sets a key to the map. 
+			If the Map doesn't exist, then create it. 
+		*/
+				
+		If(
+		
+			IsEmpty ( key ) ;
+				False ;
+			Let ( [
+				~convertedMapPrefix = Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+				~convertedKeySuffix = Map.Ω ( "ΩconvertKey" ; "" ; key ; "" ; "" ; "" ; "" ; "" );
+				~size = Map.Ω ( "ΩgetSize" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+				~void = If( IsEmpty(~size) ; Map.Ω ( "New" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ); "" ) ;
+				~size = If( IsEmpty(~size) ; 0; ~size) ;
+				~void = Map.Ω ( "ΩsetNeedsRefresh" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; True ) ;
+				~void = Map.Ω ( "ΩAppendMapKeyArray" ; "" ; key ; ~convertedMapPrefix ; "" ;  "" ; "" ; "" ) ;
+				~void = Map.Ω ( "ΩsetValue" ; "" ; "" ; ~convertedMapPrefix ; ~convertedKeySuffix ;  "" ;value ; "" ) ;
+				~void = Map.Ω ( "ΩsetSize" ; "" ; "" ; ~convertedMapPrefix ; "" ; ~size + 1 ; "" ; "" ) 
+			] ;
+				True
+			)
+		);
+
+	Function = "ToObject";
+
+		/*	TOOBJECT: 
+			Output the object as one JSON object. 
+		*/
+		
+		Let ( [
+		
+			~convertedMapPrefix = Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~needsRefresh = Map.Ω ( "ΩgetNeedsRefresh" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = If ( ~needsRefresh ;  Map.Ω ( "ΩCleanUpKeys" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ))  ;
+			~key_array = Map.Ω ( "ΩgetMapKeyArray" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~uuid_key_list = Get(UUID) ;
+			~void = Coll.FromArray ( ~uuid_key_list ; ~key_array )			  
+		] ;
+			While ( 
+				[ 
+					~dot_uuid = Left( Get(UUID) ; 8 ) ;
+					~lbr_uuid = Left( Get(UUID) ; 8 ) ;
+					~rbr_uuid = Left( Get(UUID) ; 8 ) ;
+					~result = "{"
+				 ] ;
+					Coll.GoToNext (~uuid_key_list ) ; 
+				[  
+					~key = Coll.Get(~uuid_key_list) ;
+					~key_sub = Substitute ( ~key; ["."; ~dot_uuid ] ; ["["; ~lbr_uuid ] ; ["]"; ~rbr_uuid ] ) ;
+					~convertedKeySuffix = Map.Ω ( "ΩconvertKey" ; "" ; ~key ; "" ; "" ; "" ; "" ; "" ) ;
+					~value = Map.Ω ( "ΩgetValue" ; "" ; "" ;  ~convertedMapPrefix ; ~convertedKeySuffix ; "" ; "" ; "" ) ;
+		
+					~jfe_start = Left( JSONFormatElements ( ~value ) ; 1 ) ;
+					~comma = If( Coll.GetCurrentIndex ( ~uuid_key_list) > 1 ; ",") ;
+					~obj = 
+						Case(
+							~jfe_start = "{" ; 
+								JSONSetElement ( "{}" ; ~key_sub ; ~value ; JSONObject ) ;
+							~jfe_start = "[" ; 
+								JSONSetElement ( "{}" ; ~key_sub ; ~value ; JSONArray ) ;
+							JSONSetElement ( "{}" ; ~key_sub ; ~value ; JSONString )  
+						) ;
+		
+					~obj = Middle ( ~obj ; 2 ; Length( ~obj ) - 2 ) ;
+					~obj = Substitute ( ~obj ; [ ~dot_uuid ; "."  ] ; [~lbr_uuid ; "[" ] ; [ ~rbr_uuid ; "]" ] ) ;
+					~result = ~result & ~comma & ~obj
+				] ; 
+					~result & "}" & 
+					Let( ~void = Coll.Clear(~uuid_key_list); "")	 
+			)
+		);
+
+
+	Function = "ValueArray";
+
+		/* 	VALUEARRAY:
+			Output the list of values as a JSON array, in order the keys were first created. 
+		*/
+		
+		Let ( [
+		
+			~convertedMapPrefix = Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~needsRefresh = Map.Ω ( "ΩgetNeedsRefresh" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = If ( ~needsRefresh ;  Map.Ω ( "ΩCleanUpKeys" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ))  ;
+			~key_array = Map.Ω ( "ΩgetMapKeyArray" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~uuid_key_list = Get(UUID) ;
+			~void = Coll.FromArray ( ~uuid_key_list ; ~key_array )			  
+		] ;
+			While ( 
+				[ 
+					~uuid_values = Get(UUID) ;
+					~void = Coll.New (~uuid_values) 
+				 ] ;
+					Coll.GoToNext (~uuid_key_list ) ; 
+				[  
+					~key = Coll.Get(~uuid_key_list) ;
+					~convertedKeySuffix = Map.Ω ( "ΩconvertKey" ; "" ; ~key ; "" ; "" ; "" ; "" ; "" ) ;
+					~value = Map.Ω ( "ΩgetValue" ; "" ; "" ;  ~convertedMapPrefix ; ~convertedKeySuffix ; "" ; "" ; "" ) ;
+					~void = Coll.Append( ~uuid_values ; ~value ) 
+				] ; 
+					Coll.ToArray ( ~uuid_values) 
+					& Let ( ~void = Coll.Clear( ~uuid_values ) ; "")
+					& Let ( ~void = Coll.Clear( ~uuid_key_list ) ; "")
+				 )
+		) ;
+
+	Function = "ValueList";
+
+		/* 	VALUELIST
+			Output the list of values as a list, in order the keys were first created. 
+		*/
+		
+		Let ( [
+		
+			~convertedMapPrefix = Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~needsRefresh = Map.Ω ( "ΩgetNeedsRefresh" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~void = If ( ~needsRefresh ;  Map.Ω ( "ΩCleanUpKeys" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ))  ;
+			~key_array = Map.Ω ( "ΩgetMapKeyArray" ; "" ; "" ; ~convertedMapPrefix ; "" ; "" ; "" ; "" ) ;
+			~uuid_key_list = Get(UUID) ;
+			~void = Coll.FromArray ( ~uuid_key_list ; ~key_array )			  
+		] ;
+			While ( 
+				[ 
+					~uuid_values = Get(UUID) ;
+					~void = Coll.New (~uuid_values) 
+				 ] ;
+					Coll.GoToNext (~uuid_key_list ) ; 
+				[  
+					~key = Coll.Get(~uuid_key_list) ;
+					~convertedKeySuffix = Map.Ω ( "ΩconvertKey" ; "" ; ~key ; "" ; "" ; "" ; "" ; "" ) ;
+					~value = Map.Ω ( "ΩgetValue" ; "" ; "" ;  ~convertedMapPrefix ; ~convertedKeySuffix ; "" ; "" ; "" ) ;
+					~void = Coll.Append( ~uuid_values ; ~value ) 
+				] ; 
+					Coll.ToList( ~uuid_values) 
+					& Let ( ~void = Coll.Clear( ~uuid_values ) ; "")
+					& Let ( ~void = Coll.Clear( ~uuid_key_list ) ; "")
+				 )
+		) ;
+
+
+
+	Function = "VarName";
+
+		/* 	VarName
+			Output the variable name that contains the specific key's value. 
+		*/
+		
+		Let ( [		
+			~convertedMapPrefix = Map.Ω ( "ΩconvertmapName" ; mapName ; "" ; "" ; "" ; "" ; "" ; "" ) ;
+			~convertedKeySuffix = Map.Ω ( "ΩconvertKey" ; "" ; key ; "" ; "" ; "" ; "" ; "" ) 
+		] ;
+
+			~convertedMapPrefix & ~convertedKeySuffix 
+		) ;
+
+		
+
+/* END PUBLIC FUNCTIONS */
+
+
+	""
+)
