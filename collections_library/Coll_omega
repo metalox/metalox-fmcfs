@@ -2,7 +2,7 @@
 2021-02-24 Nat Robinson, Beezwax Datatools 
 
 FileMaker Custom Function
-coll.Ω ( function ; convertedVarName ; index ; value ; size ; collectionID )
+Coll.Ω ( function ; convertedVarName ; index ; value ; size ; collectionID )
 
 
 Version History
