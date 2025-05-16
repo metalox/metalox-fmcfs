@@ -1,0 +1,9 @@
+/* FileMaker Custom Function
+Coll.FromArray( ~collectionID ; ~jsonArray )
+*/
+
+Coll.Ω ( "FromArray" ; "" ; "" ; ~jsonArray ; "" ; ~collectionID )
+
+/*
+	Translates a JSON array into a collection.
+*/
