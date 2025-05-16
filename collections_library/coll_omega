@@ -1,4 +1,4 @@
-/* Collection LIbrary V1.1.0
+/* Collection Library V1.1.0
 2021-02-24 Nat Robinson, Beezwax Datatools 
 
 FileMaker Custom Function
@@ -7,7 +7,7 @@ coll.Ω ( function ; convertedVarName ; index ; value ; size ; collectionID )
 
 Version History
 	2021-02-24 - V1.0.0 Created, Nat Robinson
-	2021-02-24 - V1.1.0 Added Coll.Sum, Nat Robinson
+	2022-12 (?) - V1.1.0 Added Coll.Sum, Nat Robinson
 */
 
 
