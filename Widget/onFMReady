@@ -1,5 +1,3 @@
-"/* to deal with weird delay in loading of FileMaker object https://github.com/stephancasas/onfmready.js */
-
 var OnFMReady = (function () {
     class OnFMReady {
         /**
@@ -43,4 +41,4 @@ var OnFMReady = (function () {
 
     return OnFMReady;
 
-})(this);"
+})(this);
